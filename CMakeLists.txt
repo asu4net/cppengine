@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 
 # Common attributes for all the subprojects.
-project(cppengine VERSION 1.0 LANGUAGES CXX)
+project(cppengine VERSION 1.0 LANGUAGES CXX C)
 # - VERSION   Version of the project.
 # - LANGUAGES If not set, determined by the file extension.
 
@@ -22,6 +22,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/Binaries-Intermediate)
 
 add_subdirectory(Engine/Runtime)
 add_subdirectory(Engine/ThirdParty/SDL)
+add_subdirectory(Engine/ThirdParty/glad)
 add_subdirectory(Launcher)
 
 # Build manual:

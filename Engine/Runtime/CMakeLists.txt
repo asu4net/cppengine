@@ -12,11 +12,12 @@ target_include_directories(Runtime
 )
 
 target_precompile_headers(Runtime
-    PRIVATE
-      RuntimePCH.h
+  PRIVATE
+    RuntimePCH.h
 )
 
 target_link_libraries(Runtime
-    PRIVATE
-        SDL3::SDL3
+  PRIVATE
+    glad
+    SDL3::SDL3
 )

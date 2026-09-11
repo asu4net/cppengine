@@ -1,12 +1,13 @@
 #include "Runtime/Application.h"
 #include "SDL3/SDL.h"
+#include "glad/gl.h" 
 
 void Application::Init()
 {
   SDL_Init(SDL_INIT_VIDEO);
 
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 1);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 4);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
   SDL_Window* window = SDL_CreateWindow(
@@ -17,6 +18,16 @@ void Application::Init()
       );
 
   SDL_GLContext context = SDL_GL_CreateContext(window);
+
+  if (!gladLoadGL((GLADloadfunc)SDL_GL_GetProcAddress))
+  {
+    //std::cerr << "Failed to initialize GLAD\n";
+    SDL_GL_DestroyContext(context);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+
+    return;
+  }
 
   bool running = true;
 
@@ -32,8 +43,8 @@ void Application::Init()
         running = false;
     }
 
-    //glClearColor(0.1f, 0.2f, 0.3f, 1.0f);
-    //glClear(GL_COLOR_BUFFER_BIT);
+    glClearColor(0.1f, 0.2f, 0.3f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
 
     SDL_GL_SwapWindow(window);
   }
