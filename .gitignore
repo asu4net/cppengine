@@ -1,0 +1,9 @@
+# Bin folders.
+/Binaries/
+/Binaries-Intermediate/
+
+# CMake output files.
+/Build
+
+# Mac specific stuff.
+*.DS_Store
