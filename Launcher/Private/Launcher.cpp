@@ -1,5 +1,4 @@
-#include "Runtime/ContextCracking.h"
-#include "Runtime/Application.h"
+#include "Runtime/CoreMinimal.h"
 
 int main(int argc, char** argv)
 {

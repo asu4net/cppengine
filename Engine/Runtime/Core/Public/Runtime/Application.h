@@ -1,3 +1,7 @@
+#pragma once
+
+#include "Runtime/ContextCracking.h"
+
 class ENGINE_API Application
 {
   public:
