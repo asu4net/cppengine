@@ -21,6 +21,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/Binaries)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/Binaries-Intermediate)
 
 add_subdirectory(Engine/Runtime)
+add_subdirectory(Engine/ThirdParty/SDL)
 add_subdirectory(Launcher)
 
 # Build manual:

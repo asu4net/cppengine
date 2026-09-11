@@ -15,3 +15,8 @@ target_precompile_headers(Runtime
     PRIVATE
       RuntimePCH.h
 )
+
+target_link_libraries(Runtime
+    PRIVATE
+        SDL3::SDL3
+)
