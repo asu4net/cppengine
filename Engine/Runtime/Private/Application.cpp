@@ -4,6 +4,8 @@
 
 void Application::Init()
 {
+  LOG_ERR("Esto es una prueba del log de error {}", 1);
+
   SDL_Init(SDL_INIT_VIDEO);
 
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 1);
@@ -48,11 +50,15 @@ void Application::Init()
 
     SDL_GL_SwapWindow(window);
   }
+  
+  ASSERT(window == nullptr);
 
   SDL_GL_DestroyContext(context);
   SDL_DestroyWindow(window);
   SDL_Quit();
 };
+
+
 
 void Application::Exit()
 {
@@ -61,10 +67,15 @@ void Application::Exit()
 
 void Application::OnInit()
 {
-  std::print("Application init! \n");
+  LOG_INFO("Application init!");
 }
 
 void Application::OnExit()
 {
-  std::print("Application exit! \n");
+  LOG_INFO("Application exit!");
 }
+
+void Application::InitGraphics()
+{
+
+};

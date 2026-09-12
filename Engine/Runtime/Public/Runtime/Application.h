@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Runtime/ContextCracking.h"
+#include "Runtime/Base.h"
 
 class ENGINE_API Application
 {
@@ -14,4 +14,7 @@ class ENGINE_API Application
   protected:
     virtual void OnInit();
     virtual void OnExit();
+
+  private:
+    void InitGraphics();
 };

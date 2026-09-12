@@ -20,6 +20,15 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/Binaries)
 # The intermediate files will go to Binaries-Intermediate directory.
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/Binaries-Intermediate)
 
+add_compile_definitions(
+  $<$<CONFIG:Debug>:CONFIG_DEBUG>
+  $<$<CONFIG:Release>:CONFIG_RELEASE>
+)
+
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type" FORCE)
+endif()
+
 add_subdirectory(Engine/Runtime)
 add_subdirectory(Engine/ThirdParty/SDL)
 add_subdirectory(Engine/ThirdParty/glad)
