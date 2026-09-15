@@ -4,8 +4,6 @@
 
 void Application::Init()
 {
-  LOG_ERR("Esto es una prueba del log de error {}", 1);
-
   SDL_Init(SDL_INIT_VIDEO);
 
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 1);
@@ -23,7 +21,7 @@ void Application::Init()
 
   if (!gladLoadGL((GLADloadfunc)SDL_GL_GetProcAddress))
   {
-    //std::cerr << "Failed to initialize GLAD\n";
+    LOG_ERR("Failed to initialize glad!");
     SDL_GL_DestroyContext(context);
     SDL_DestroyWindow(window);
     SDL_Quit();
@@ -51,14 +49,10 @@ void Application::Init()
     SDL_GL_SwapWindow(window);
   }
   
-  ASSERT(window == nullptr);
-
   SDL_GL_DestroyContext(context);
   SDL_DestroyWindow(window);
   SDL_Quit();
 };
-
-
 
 void Application::Exit()
 {
