@@ -145,7 +145,7 @@ void LogAssertionFailed(
 #define ASSERT(condition)                              \
   do {                                                 \
     if (!(condition)) {                                \
-        ::LogAssertionFailed(                        \
+        ::LogAssertionFailed(                          \
             std::source_location::current(),           \
             #condition);                               \
         DEBUG_BREAK();                                 \
