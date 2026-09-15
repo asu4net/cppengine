@@ -29,7 +29,7 @@
 #include <new>
 #include <utility>
 
-// Identifies an element inside a generational array.
+// Identifies an element inside a handle array.
 struct ArrayHandle
 {
   std::uint32_t Index = 0u;
@@ -46,9 +46,9 @@ struct ArrayHandle
   }
 };
 
-// The generational Array.
+// The handle Array.
 template<typename T, std::uint32_t Cap>
-class StaticGenerationalArray
+class StaticHandleArray
 {
 public:
   // @Note: It is Cap + 1 because we follow ZII (Zero Is Initialization),
@@ -65,7 +65,7 @@ public:
   class Iterator
   {
   public:
-    Iterator(StaticGenerationalArray* array, std::uint32_t index)
+    Iterator(StaticHandleArray* array, std::uint32_t index)
       : m_Array(array)
       , m_Index(index)
     {
@@ -121,14 +121,14 @@ public:
       }
     }
 
-    StaticGenerationalArray* m_Array;
+    StaticHandleArray* m_Array;
     std::uint32_t m_Index;
   };
 
   class ConstIterator
   {
   public:
-    ConstIterator(const StaticGenerationalArray* array, std::uint32_t index)
+    ConstIterator(const StaticHandleArray* array, std::uint32_t index)
       : m_Array(array)
       , m_Index(index)
     {
@@ -183,11 +183,11 @@ public:
       }
     }
 
-    const StaticGenerationalArray* m_Array;
+    const StaticHandleArray* m_Array;
     std::uint32_t m_Index;
   };
 
-  StaticGenerationalArray()
+  StaticHandleArray()
   {
     for (std::uint32_t i = 1u; i < Capacity; ++i)
     {
@@ -196,7 +196,7 @@ public:
     m_FreeListSize = Cap;
   }
 
-  ~StaticGenerationalArray()
+  ~StaticHandleArray()
   {
     Clear();
   }
@@ -205,10 +205,10 @@ public:
   // copy/move of this class would memcpy live objects and double-run
   // their destructors. Deleted on purpose; write an explicit copy/move
   // (looping Append/Emplace per occupied slot) if you ever need one.
-  StaticGenerationalArray(const StaticGenerationalArray&) = delete;
-  StaticGenerationalArray& operator=(const StaticGenerationalArray&) = delete;
-  StaticGenerationalArray(StaticGenerationalArray&&) = delete;
-  StaticGenerationalArray& operator=(StaticGenerationalArray&&) = delete;
+  StaticHandleArray(const StaticHandleArray&) = delete;
+  StaticHandleArray& operator=(const StaticHandleArray&) = delete;
+  StaticHandleArray(StaticHandleArray&&) = delete;
+  StaticHandleArray& operator=(StaticHandleArray&&) = delete;
 
   // @Note: Constructs T in-place inside the slot. This is the primitive
   // both Append overloads are built on; use it directly for move-only
