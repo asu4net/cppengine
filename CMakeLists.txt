@@ -43,3 +43,5 @@ add_subdirectory(Launcher)
 # [command] cmake --build Build
 # This uses the files generated in the build folder to
 # compile the projects.
+
+# Regular workflow on Windows: cls && cmake --build Build && call "Binaries/Debug/game.exe"
