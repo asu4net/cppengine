@@ -43,7 +43,7 @@
 #if CONFIG_DEBUG
 
 template <typename... Args>
-void log_info(
+void LogInfo(
   std::source_location loc,
   std::format_string<Args...> fmt,
   Args&&... args
@@ -55,7 +55,7 @@ void log_info(
 }
 
 template <typename... Args>
-void log_warn(
+void LogWarning(
   std::source_location loc,
   std::format_string<Args...> fmt,
   Args&&... args
@@ -69,7 +69,7 @@ void log_warn(
 }
 
 template <typename... Args>
-void log_error(
+void LogError(
   std::source_location loc,
   std::format_string<Args...> fmt,
   Args&&... args
@@ -84,7 +84,7 @@ void log_error(
 }
 
 template <typename... Args>
-void log_assertion_failed(
+void LogAssertionFailed(
   std::source_location loc,
   std::format_string<Args...> fmt,
   Args&&... args
@@ -101,21 +101,21 @@ void log_assertion_failed(
 #else
 
 template <typename... Args>
-constexpr void log_info(
+constexpr void LogInfo(
   std::source_location loc,
   std::format_string<Args...> fmt,
   Args&&... args
 ) noexcept {}
 
 template <typename... Args>
-constexpr void log_warn(
+constexpr void LogWarning(
   std::source_location loc,
   std::format_string<Args...> fmt,
   Args&&... args
 ) noexcept {}
 
 template <typename... Args>
-constexpr void log_error(
+constexpr void LogError(
   std::source_location loc,
   std::format_string<Args...> fmt,
   Args&&... args
@@ -123,7 +123,7 @@ constexpr void log_error(
 
 
 template <typename... Args>
-void log_assertion_failed(
+void LogAssertionFailed(
   std::source_location loc,
   std::format_string<Args...> fmt,
   Args&&... args
@@ -134,18 +134,18 @@ void log_assertion_failed(
 #if CONFIG_DEBUG
 
 #define LOG_INFO(...) \
-    ::log_info(std::source_location::current(), __VA_ARGS__)
+    ::LogInfo(std::source_location::current(), __VA_ARGS__)
 
 #define LOG_WARN(...) \
-    ::log_warn(std::source_location::current(), __VA_ARGS__)
+    ::LogWarning(std::source_location::current(), __VA_ARGS__)
 
 #define LOG_ERR(...) \
-    ::log_error(std::source_location::current(), __VA_ARGS__)
+    ::LogError(std::source_location::current(), __VA_ARGS__)
 
 #define ASSERT(condition)                              \
   do {                                                 \
     if (!(condition)) {                                \
-        ::log_assertion_failed(                        \
+        ::LogAssertionFailed(                        \
             std::source_location::current(),           \
             #condition);                               \
         DEBUG_BREAK();                                 \
