@@ -33,6 +33,12 @@ void Application::Init()
 
   OnInit();
 
+  VertexBufferParams params;
+  m_GraphicsStorage.Emplace<VertexBuffer>(params);
+
+  ShaderParams sparams;
+  m_GraphicsStorage.Emplace<Shader>(sparams);
+
   while (running)
   {
     SDL_Event event;
@@ -68,8 +74,3 @@ void Application::OnExit()
 {
   LOG_INFO("Application exit!");
 }
-
-void Application::InitGraphics()
-{
-
-};

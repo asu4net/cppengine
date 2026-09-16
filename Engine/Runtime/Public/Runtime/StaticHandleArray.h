@@ -206,9 +206,9 @@ public:
   // their destructors. Deleted on purpose; write an explicit copy/move
   // (looping Append/Emplace per occupied slot) if you ever need one.
   StaticHandleArray(const StaticHandleArray&) = delete;
-  StaticHandleArray& operator=(const StaticHandleArray&) = delete;
+  StaticHandleArray& operator=(const StaticHandleArray&) noexcept = delete;
   StaticHandleArray(StaticHandleArray&&) = delete;
-  StaticHandleArray& operator=(StaticHandleArray&&) = delete;
+  StaticHandleArray& operator=(StaticHandleArray&&) noexcept = delete;
 
   // @Note: Constructs T in-place inside the slot. This is the primitive
   // both Append overloads are built on; use it directly for move-only

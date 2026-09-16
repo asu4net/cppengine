@@ -1,20 +1,25 @@
 #pragma once
 
-#include "Runtime/Base.h"
+#include "Runtime/GraphicsStorage.h"
 
 class ENGINE_API Application
 {
-  public:
-    Application() = default;
-    virtual ~Application() {}
+public:
+  Application() = default;
+  virtual ~Application() = default;
 
-    void Init();
-    void Exit();
+  Application(const Application&) = delete;
+  Application& operator=(const Application&) noexcept = delete;
+  Application(Application&&) = delete;
+  Application& operator=(Application&&) noexcept = delete;
 
-  protected:
-    virtual void OnInit();
-    virtual void OnExit();
+  void Init();
+  void Exit();
 
-  private:
-    void InitGraphics();
+protected:
+  virtual void OnInit();
+  virtual void OnExit();
+
+private:
+  GraphicsStorage m_GraphicsStorage;
 };

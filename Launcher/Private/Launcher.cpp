@@ -4,8 +4,11 @@ int main(int argc, char** argv)
 {
   Application* app = new Application();
   app->Init();
-  app->Exit();
-  // @Note: We don't need to call delete on app
+  // @Note: We don't really need to call delete on app
   // the OS takes resposability of freeing all
-  // the memory for us.
+  // the memory for us. But for debugging purposes
+  // we'll keep it for now.
+  app->Exit();
+  delete app;
+  app = nullptr;
 }
