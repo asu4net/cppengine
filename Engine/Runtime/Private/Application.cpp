@@ -1,6 +1,6 @@
 #include "Runtime/Application.h"
 #include "SDL3/SDL.h"
-#include "glad/gl.h" 
+#include "glad/glad.h" 
 
 // Test code for graphis storage.
 #include "Runtime/VertexBuffer.h"
@@ -10,9 +10,10 @@ void Application::Init()
 {
   SDL_Init(SDL_INIT_VIDEO);
 
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 1);
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 4);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+  SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
   SDL_Window* window = SDL_CreateWindow(
       "SDL3 + OpenGL",
@@ -22,14 +23,15 @@ void Application::Init()
       );
 
   SDL_GLContext context = SDL_GL_CreateContext(window);
+  SDL_GL_MakeCurrent(window, context);
 
-  if (!gladLoadGL((GLADloadfunc)SDL_GL_GetProcAddress))
+
+  if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress))
   {
     LOG_ERR("Failed to initialize glad!");
     SDL_GL_DestroyContext(context);
     SDL_DestroyWindow(window);
     SDL_Quit();
-
     return;
   }
 

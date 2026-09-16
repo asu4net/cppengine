@@ -1,5 +1,5 @@
 add_library(glad STATIC
-  src/gl.c
+  src/glad.c
 )
 
 target_include_directories(glad

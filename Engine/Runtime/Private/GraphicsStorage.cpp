@@ -1,5 +1,5 @@
 #include "Runtime/GraphicsStorage.h"
-#include "glad/gl.h" 
+#include "glad/glad.h" 
 
 // @Pending: Check if OPENGL defined at comptime.
 #include "OpenGLVertexBuffer.h"
