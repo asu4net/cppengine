@@ -3,7 +3,7 @@
 struct StorageArrays;
 
 // @Note: This class returns interfaces to our graphics
-// objects in order to keep the rest of the code engine
+// objects in order to keep the rest of the code API
 // agnostic and keep the API specific symbols confined
 // in the implementation. This decision comes with a cost:
 // Each time we call Get to recieve our interface and then call
