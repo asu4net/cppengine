@@ -2,6 +2,17 @@
 
 struct StorageArrays;
 
+// @Note: This class returns interfaces to our graphics
+// objects in order to keep the rest of the code engine
+// agnostic and keep the API specific symbols confined
+// in the implementation. This decision comes with a cost:
+// Each time we call Get to recieve our interface and then call
+// some other method through that interface, we are going to have 
+// two relevant indirections:
+// - The m_Arrays pointer dereference.
+// - The VTable search of the interface method.
+// Still, should be enough fast even for hot loops. I Guess.
+
 // @Review: We could achieve something similar to the 
 // concept of distinct types, that already exists in 
 // some modern C-like languages, using struct wrappers. 
