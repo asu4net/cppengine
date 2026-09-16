@@ -9,8 +9,8 @@
 // have the right types (depending on the API we are using)
 // for the function declarations and definitions. I know it is
 // possible to achieve something similar to whis with templates
-// but I just find this way simpler. Simpler, but not pretty, I'm
-// sorry :(
+// but I just find this waaaaaay simpler. Simpler, but not pretty, 
+// I'm sorry :(
 
 // @Note: In order to keep shorter compilation times
 // we'll compile the graphics objects cpp's in this
