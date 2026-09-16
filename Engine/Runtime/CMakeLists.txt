@@ -1,5 +1,6 @@
 add_library(Runtime SHARED
   Private/Application.cpp
+  Private/GraphicsStorage.cpp
 )
 
 target_include_directories(Runtime 
