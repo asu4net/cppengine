@@ -2,6 +2,10 @@
 #include "SDL3/SDL.h"
 #include "glad/gl.h" 
 
+// Test code for graphis storage.
+#include "Runtime/VertexBuffer.h"
+#include "Runtime/Shader.h"
+
 void Application::Init()
 {
   SDL_Init(SDL_INIT_VIDEO);

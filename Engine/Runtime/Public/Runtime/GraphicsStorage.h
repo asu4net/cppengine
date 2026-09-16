@@ -1,9 +1,5 @@
 #pragma once
 
-#include "Runtime/ShaderDataType.h"
-#include "Runtime/VertexBuffer.h"
-#include "Runtime/Shader.h"
-
 struct StorageArrays;
 
 // @Review: We could achieve something similar to the 

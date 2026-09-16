@@ -23,7 +23,7 @@ struct StorageArrays
 {
 #define GRAPHICS_STORAGE_REGISTER(_BASE, _DERIVED, _PARAMS) \
   StaticHandleArray<_DERIVED, 50> m_##_DERIVED##Array; // @Pending: _SIZE to the X macro.
-#include "Runtime/GraphicsStorageList.h"
+#include "GraphicsStorageList.h"
 #undef GRAPHICS_STORAGE_REGISTER
 };
 
@@ -46,7 +46,7 @@ GraphicsHandle GraphicsStorage::Emplace<_BASE>(const _PARAMS& params) \
 {                                                                     \
    return m_Arrays->m_##_DERIVED##Array.Emplace(params);              \
 }
-#include "Runtime/GraphicsStorageList.h"
+#include "GraphicsStorageList.h"
 #undef GRAPHICS_STORAGE_REGISTER
 
 // Comptime Generated Get
@@ -56,7 +56,7 @@ _BASE* GraphicsStorage::Get(GraphicsHandle handle)                    \
 {                                                                     \
    return m_Arrays->m_##_DERIVED##Array.Get(handle);                  \
 }
-#include "Runtime/GraphicsStorageList.h"
+#include "GraphicsStorageList.h"
 #undef GRAPHICS_STORAGE_REGISTER
 
 // Comptime Generated Remove
@@ -66,7 +66,7 @@ void GraphicsStorage::Remove<_BASE>(GraphicsHandle handle)            \
 {                                                                     \
    m_Arrays->m_##_DERIVED##Array.Remove(handle);                      \
 }
-#include "Runtime/GraphicsStorageList.h"
+#include "GraphicsStorageList.h"
 #undef GRAPHICS_STORAGE_REGISTER
 
 // Comptime Generated IsValid
@@ -76,5 +76,5 @@ bool GraphicsStorage::IsValid<_BASE>(GraphicsHandle handle)           \
 {                                                                     \
    return m_Arrays->m_##_DERIVED##Array.IsValid(handle);              \
 }
-#include "Runtime/GraphicsStorageList.h"
+#include "GraphicsStorageList.h"
 #undef GRAPHICS_STORAGE_REGISTER

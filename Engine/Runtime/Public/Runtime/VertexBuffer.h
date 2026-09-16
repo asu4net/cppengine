@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Runtime/ShaderDataType.h"
+
 struct VertexBufferParams
 {
 };

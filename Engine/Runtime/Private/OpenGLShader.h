@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Runtime/Shader.h"
+
 class OpenGLShader : public Shader
 {
   public:
