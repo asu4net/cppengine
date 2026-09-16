@@ -33,8 +33,11 @@ void Application::Init()
 
   OnInit();
 
+  // Test code for graphis storage.
   VertexBufferParams params;
-  m_GraphicsStorage.Emplace<VertexBuffer>(params);
+  auto handle = m_GraphicsStorage.Emplace<VertexBuffer>(params);
+  VertexBuffer* vb = m_GraphicsStorage.Get<VertexBuffer>(handle);
+  m_GraphicsStorage.IsValid<VertexBuffer>(handle);
 
   ShaderParams sparams;
   m_GraphicsStorage.Emplace<Shader>(sparams);
