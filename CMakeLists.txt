@@ -29,6 +29,10 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type" FORCE)
 endif()
 
+option(ENGINE_OPENGL "Use OpenGL"       ON )
+option(ENGINE_D3D11  "Use Direct3D 11"  OFF)
+option(ENGINE_METAL  "Use Metal"        OFF)
+
 add_subdirectory(Engine/Runtime)
 add_subdirectory(Engine/ThirdParty/SDL)
 add_subdirectory(Engine/ThirdParty/glad)

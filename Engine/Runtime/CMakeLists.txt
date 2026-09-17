@@ -25,3 +25,15 @@ target_compile_definitions(Runtime
   PRIVATE 
     RUNTIME_BUILD
 )
+
+if (ENGINE_OPENGL)
+  target_compile_definitions(Runtime PRIVATE ENGINE_OPENGL)
+endif()
+
+if (ENGINE_D3D11)
+  target_compile_definitions(Runtime PRIVATE ENGINE_D3D11)
+endif()
+
+if (ENGINE_METAL)
+  target_compile_definitions(Runtime PRIVATE ENGINE_METAL)
+endif()

@@ -1,9 +1,23 @@
 #include "Runtime/GraphicsStorage.h"
 #include "glad/glad.h" 
 
-// @Pending: Check if OPENGL defined at comptime.
-#include "OpenGLVertexBuffer.h"
-#include "OpenGLShader.h"
+#if ENGINE_OPENGL
+#include "OpenGL/OpenGLVertexBuffer.h"
+#include "OpenGL/OpenGLShader.h"
+#else
+#error "Missing Graphics API implementation."
+#endif
+
+
+// @Note: In order to keep shorter compilation times
+// we'll compile the graphics objects cpp's in this
+// translation unit.
+#if ENGINE_OPENGL
+#include "OpenGL/OpenGLVertexBuffer.cpp"
+#include "OpenGL/OpenGLShader.cpp"
+#else
+#error "Missing Graphics API implementation."
+#endif
 
 // @Note: This class will use some X macro magic in order
 // have the right types (depending on the API we are using)
@@ -11,12 +25,6 @@
 // possible to achieve something similar to whis with templates
 // but I just find this waaaaaay simpler. Simpler, but not pretty, 
 // I'm sorry :(
-
-// @Note: In order to keep shorter compilation times
-// we'll compile the graphics objects cpp's in this
-// translation unit.
-#include "OpenGLVertexBuffer.cpp"
-#include "OpenGLShader.cpp"
 
 // Comptime Generated Storages.
 struct StorageArrays
