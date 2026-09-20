@@ -1,85 +1,35 @@
 #include "Runtime/Application.h"
-#include "SDL3/SDL.h"
-#include "glad/glad.h" 
 
 // Test code for graphis storage.
 #include "Runtime/VertexBuffer.h"
 #include "Runtime/Shader.h"
 
-void Application::Init()
+// @Note: For know we keep here both files
+// since we are not going to expose the 
+// window creation API to the user.
+// This may change in the future.
+#include "WindowCreation.h"
+#include "WindowCreation.cpp"
+#include "Input.h"
+#include "Input.cpp"
+
+bool Application::Run(std::string_view name, std::uint32_t w, std::uint32_t h)
 {
-  SDL_Init(SDL_INIT_VIDEO);
+  WindowCreation::InitWindow(name, w, h);
+  m_IsRunning = true;
 
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-  SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-
-  SDL_Window* window = SDL_CreateWindow(
-      "SDL3 + OpenGL",
-      1280,
-      720,
-      SDL_WINDOW_OPENGL
-      );
-
-  SDL_GLContext context = SDL_GL_CreateContext(window);
-  SDL_GL_MakeCurrent(window, context);
-
-
-  if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress))
+  while (m_IsRunning)
   {
-    LOG_ERR("Failed to initialize glad!");
-    SDL_GL_DestroyContext(context);
-    SDL_DestroyWindow(window);
-    SDL_Quit();
-    return;
-  }
+    m_IsRunning = !Input::ShouldCloseWindow();
 
-  bool running = true;
-
-  OnInit();
-
-  // Test code for graphis storage.
-  VertexBufferParams params;
-  auto handle = m_GraphicsStorage.Emplace<VertexBuffer>(params);
-  VertexBuffer* vb = m_GraphicsStorage.Get<VertexBuffer>(handle);
-  m_GraphicsStorage.IsValid<VertexBuffer>(handle);
-
-  ShaderParams sparams;
-  m_GraphicsStorage.Emplace<Shader>(sparams);
-
-  while (running)
-  {
-    SDL_Event event;
-
-    while (SDL_PollEvent(&event))
-    {
-      if (event.type == SDL_EVENT_QUIT)
-        running = false;
-    }
-
+    // @Review: This will go somewhere else once we do the D3D11 implementation.
+#ifdef ENGINE_OPENGL
     glClearColor(0.1f, 0.2f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-
-    SDL_GL_SwapWindow(window);
+#endif
+    WindowCreation::Present();
   }
   
-  SDL_GL_DestroyContext(context);
-  SDL_DestroyWindow(window);
-  SDL_Quit();
+  WindowCreation::DeinitWindow();
+  return true;
 };
-
-void Application::Exit()
-{
-  OnExit();
-};
-
-void Application::OnInit()
-{
-  LOG_INFO("Application init!");
-}
-
-void Application::OnExit()
-{
-  LOG_INFO("Application exit!");
-}

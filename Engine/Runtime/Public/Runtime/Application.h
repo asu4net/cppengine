@@ -13,13 +13,11 @@ public:
   Application(Application&&) = delete;
   Application& operator=(Application&&) noexcept = delete;
 
-  void Init();
-  void Exit();
-
-protected:
-  virtual void OnInit();
-  virtual void OnExit();
+  bool Run(std::string_view name = "Application", std::uint32_t w = 1270, std::uint32_t h = 720);
 
 private:
+  bool m_IsRunning = false;
+  std::uint32_t m_Width = 0;
+  std::uint32_t m_Height = 0;
   GraphicsStorage m_GraphicsStorage;
 };

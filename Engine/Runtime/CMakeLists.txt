@@ -26,6 +26,10 @@ target_compile_definitions(Runtime
     RUNTIME_BUILD
 )
 
+if (ENGINE_SDL)
+  target_compile_definitions(Runtime PRIVATE ENGINE_SDL)
+endif()
+
 if (ENGINE_OPENGL)
   target_compile_definitions(Runtime PRIVATE ENGINE_OPENGL)
 endif()
