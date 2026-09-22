@@ -44,6 +44,7 @@ if (ENGINE_OPENGL)
   add_subdirectory(Engine/ThirdParty/glad)
 endif()
 
+add_subdirectory(Engine/ThirdParty/glm)
 add_subdirectory(Launcher)
 
 # Build manual:

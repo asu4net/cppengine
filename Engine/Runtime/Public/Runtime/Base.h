@@ -167,10 +167,10 @@ void LogAssertionFailed(
 #define EACH_INDEX(it, count) (s32 it = 0; it < (count); it += 1)
 
 // Unit macros.
-#define KB(n) (((u64)(n)) << 10)
-#define MB(n) (((u64)(n)) << 20)
-#define GB(n) (((u64)(n)) << 30)
-#define TB(n) (((u64)(n)) << 40)
+#define KB(n) (((std::uint64_t)(n)) << 10)
+#define MB(n) (((std::uint64_t)(n)) << 20)
+#define GB(n) (((std::uint64_t)(n)) << 30)
+#define TB(n) (((std::uint64_t)(n)) << 40)
 #define THOUSAND(n) ((n)*1000)
 #define MILLION(n) ((n)*1000000)
 #define BILLION(n) ((n)*1000000000)
@@ -183,5 +183,5 @@ void LogAssertionFailed(
 
 // Misc macros.
 #define UNUSED(v) ((void)v)
-#define DEFER_BLOCK(begin, end) for(s32 _i_ = ((begin), 0); !_i_; _i_ += 1, (end))
+#define DEFER_BLOCK(begin, end) for(std::int32_t _i_ = ((begin), 0); !_i_; _i_ += 1, (end))
 #define ALIGN_POW2(x,b) (((x) + (b) - 1)&(~((b) - 1))) // @Note: b has to be pow2. 

@@ -1,20 +1,29 @@
 #include "Runtime/GraphicsStorage.h"
-#include "glad/glad.h" 
+#include "Runtime/Application.h"
 
-#if ENGINE_OPENGL
-#include "OpenGL/OpenGLVertexBuffer.h"
-#include "OpenGL/OpenGLShader.h"
+#ifdef ENGINE_OPENGL
+#include "glad/glad.h" 
+#elif  ENGINE_D3D11
 #else
+#define WIN32_MEAN_AND_LEAN
+#include <Windows.h>
+#include <d3d11.h>
+#include <dxgi.h>
 #error "Missing Graphics API implementation."
 #endif
 
-
-// @Note: In order to keep shorter compilation times
-// we'll compile the graphics objects cpp's in this
-// translation unit.
-#if ENGINE_OPENGL
-#include "OpenGL/OpenGLVertexBuffer.cpp"
-#include "OpenGL/OpenGLShader.cpp"
+#ifdef ENGINE_OPENGL
+#include "OpenGL/OpenGLGraphicsInstance.h"
+#include "OpenGL/OpenGLGraphicsDevice.h"
+#include "OpenGL/OpenGLGraphicsContext.h"
+#include "OpenGL/OpenGLVertexBuffer.h"
+#include "OpenGL/OpenGLShader.h"
+#elif  ENGINE_D3D11
+#include "D3D11/D3D11GraphicsInstance.h"
+#include "D3D11/D3D11GraphicsDevice.h"
+#include "D3D11/D3D11GraphicsContext.h"
+#include "D3D11/D3D11VertexBuffer.h"
+#include "D3D11/D3D11Shader.h"
 #else
 #error "Missing Graphics API implementation."
 #endif
@@ -86,3 +95,22 @@ bool GraphicsStorage::IsValid<_BASE>(GraphicsHandle handle)           \
 }
 #include "GraphicsStorageList.h"
 #undef GRAPHICS_STORAGE_REGISTER
+
+// @Note: In order to keep shorter compilation times
+// we'll compile the graphics objects cpp's in this
+// translation unit.
+#ifdef ENGINE_OPENGL
+#include "OpenGL/OpenGLGraphicsInstance.cpp"
+#include "OpenGL/OpenGLGraphicsDevice.cpp"
+#include "OpenGL/OpenGLGraphicsContext.cpp"
+#include "OpenGL/OpenGLVertexBuffer.cpp"
+#include "OpenGL/OpenGLShader.cpp"
+#elif  ENGINE_D3D11
+#include "D3D11/D3D11GraphicsInstance.cpp"
+#include "D3D11/D3D11GraphicsDevice.cpp"
+#include "D3D11/D3D11GraphicsContext.cpp"
+#include "D3D11/D3D11VertexBuffer.cpp"
+#include "D3D11/D3D11Shader.cpp"
+#else
+#error "Missing Graphics API implementation."
+#endif

@@ -17,7 +17,7 @@ namespace WindowCreation
   {
     #ifdef ENGINE_SDL
     #ifdef ENGINE_OPENGL
-    return SDLOpenGL::CreateWindowAndContext(name, w, h);
+    return SDLOpenGL::InitWindow(name, w, h);
     #else
     #error "Missing SDL implementation for Window Creation!"
     #endif
@@ -29,7 +29,7 @@ namespace WindowCreation
   {
     #ifdef ENGINE_SDL
     #ifdef ENGINE_OPENGL
-    SDLOpenGL::DestroyContextAndWindow();
+    SDLOpenGL::DeinitWindow();
     #else
     #error "Missing SDL implementation for Window Creation!"
     #endif
@@ -37,6 +37,18 @@ namespace WindowCreation
     #error "Missing implementation for Window Creation!"
     #endif
 
+  }
+  void* GetHandle()
+  {
+    #ifdef ENGINE_SDL
+    #ifdef ENGINE_OPENGL
+    return SDLOpenGL::GetHandle();
+    #else
+    #error "Missing SDL implementation for Window Creation!"
+    #endif
+    #else
+    #error "Missing implementation for Window Creation!"
+    #endif
   }
   void Present(bool vsync)
   {

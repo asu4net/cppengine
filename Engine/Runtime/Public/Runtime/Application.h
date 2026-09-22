@@ -2,22 +2,31 @@
 
 #include "Runtime/GraphicsStorage.h"
 
+class GraphicsInstance;
+
 class ENGINE_API Application
 {
-public:
-  Application() = default;
-  virtual ~Application() = default;
+  public:
+    static Application& GetInstance();
 
-  Application(const Application&) = delete;
-  Application& operator=(const Application&) noexcept = delete;
-  Application(Application&&) = delete;
-  Application& operator=(Application&&) noexcept = delete;
+    Application();
+    virtual ~Application() = default;
 
-  bool Run(std::string_view name = "Application", std::uint32_t w = 1270, std::uint32_t h = 720);
+    Application(const Application&) = delete;
+    Application& operator=(const Application&) noexcept = delete;
+    Application(Application&&) = delete;
+    Application& operator=(Application&&) noexcept = delete;
 
-private:
-  bool m_IsRunning = false;
-  std::uint32_t m_Width = 0;
-  std::uint32_t m_Height = 0;
-  GraphicsStorage m_GraphicsStorage;
+    bool Run(std::string_view name = "Application", std::uint32_t w = 1270, std::uint32_t h = 720);
+
+    GraphicsInstance& GetGraphicsInstance() const;
+    GraphicsStorage& GetGraphicsStorage();
+
+  private:
+    bool m_IsRunning = false;
+    std::uint32_t m_Width = 0;
+    std::uint32_t m_Height = 0;
+    GraphicsStorage m_GraphicsStorage;
+    GraphicsHandle m_GraphicsInstanceHandle;
+    GraphicsInstance* m_GraphicsInstance = nullptr;
 };

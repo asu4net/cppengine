@@ -19,6 +19,8 @@ target_link_libraries(Runtime
   PRIVATE
     glad
     SDL3::SDL3
+  PUBLIC
+    glm::glm
 )
 
 target_compile_definitions(Runtime 

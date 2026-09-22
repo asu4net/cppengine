@@ -9,9 +9,8 @@ namespace SDLOpenGL
   static constexpr bool c_UseDoubleBuffer = true;
 
   static SDL_Window* s_Window = nullptr;
-  static SDL_GLContext s_Context;
 
-  bool CreateWindowAndContext(std::string_view name, std::uint32_t w, std::uint32_t h)
+  bool InitWindow(std::string_view name, std::uint32_t w, std::uint32_t h)
   {
     SDL_Init(SDL_INIT_VIDEO);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, c_Major);
@@ -32,40 +31,21 @@ namespace SDLOpenGL
       SDL_Quit();
       return false;
     }
-
-    s_Context = SDL_GL_CreateContext(s_Window);
-    if (!s_Context)
-    {
-      LOG_ERR("SDL_GL_CreateContext(): {}", SDL_GetError());
-      SDL_DestroyWindow(s_Window);
-    }
-
-    if (!SDL_GL_MakeCurrent(s_Window, s_Context)) 
-    {
-      LOG_ERR("SDL_GL_MakeCurrent(): {}", SDL_GetError());
-      SDL_DestroyWindow(s_Window);
-      SDL_Quit();
-      return false;
-    }
-
-    if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress))
-    {
-      LOG_ERR("Failed to initialize glad!");
-      DestroyContextAndWindow();
-      return false;
-    }
-    return true;
   }
 
-  void DestroyContextAndWindow()
+  void DeinitWindow()
   {
-    SDL_GL_DestroyContext(s_Context);
     SDL_DestroyWindow(s_Window);
     SDL_Quit();
-    s_Context = nullptr;
     s_Window = nullptr;
   }
 
+  void* GetHandle()
+  {
+    return s_Window;
+  }
+
+  // @Pending: Move this to the SwapChain object.
   void SwapBuffers(bool vsync)
   {
     SDL_GL_SwapWindow(s_Window);
