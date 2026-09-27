@@ -91,6 +91,37 @@ D3D11GraphicsInstance::D3D11GraphicsInstance(const GraphicsInstanceParams& param
     std::exit(EXIT_FAILURE);
   }
 
+  // Gain access to the render target, and give the full ownership of it
+  // to the swap chain.
+  
+  // Get the swap chain
+  auto** d3d11SwapChainObjectHandle = d3d11SwapChain->GetPointer();
+  auto* d3d11SwapChainObject = d3d11SwapChainObjectHandle != nullptr ? *d3d11SwapChainObjectHandle : nullptr;
+  ASSERT(d3d11SwapChainObject != nullptr);
+  if (d3d11SwapChainObject == nullptr)
+  {
+    LOG_ERR("D3D11 unhandled error retrieving the d3d11 swap chain.");
+    std::exit(EXIT_FAILURE);
+  }
+
+  // Get the back buffer
+  ID3D11Resource* backBuffer = nullptr;
+  d3d11SwapChainObject->GetBuffer(0, __uuidof(ID3D11Resource), reinterpret_cast<void**>(&backBuffer));
+  ASSERT(backBuffer != nullptr);
+  if (backBuffer == nullptr)
+  {
+    LOG_ERR("D3D11 Error retrieving the back buffer.");
+    std::exit(EXIT_FAILURE);
+  }
+
+  // Create the render target view, filling the pointer in the swap chain.
+  auto* d3d11Device = *m_Device->GetPointer();
+  d3d11Device->CreateRenderTargetView(backBuffer, nullptr, d3d11SwapChain->GetRenderTargetViewPointer());
+  
+  // We don't need the back buffer anymore.
+  backBuffer->Release();
+  backBuffer = nullptr;
+
   LOG_INFO("D3D11 Graphics instance created!");
 }
 

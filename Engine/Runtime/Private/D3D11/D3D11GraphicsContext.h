@@ -15,8 +15,9 @@ class D3D11GraphicsContext : public GraphicsContext
 
     ID3D11DeviceContext** GetPointer() { return &m_Context; }
 
+    void ClearBackBuffer(SwapChain& swapChain, float r = 0, float g = 0, float b = 0) override;
+
   private:
     ID3D11DeviceContext* m_Context;
 };
-
 

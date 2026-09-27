@@ -28,7 +28,6 @@ D3D11GraphicsDevice::~D3D11GraphicsDevice()
   LOG_INFO("D3D11 Device destroyed!");
 }
 
-
 SwapChain& D3D11GraphicsDevice::GetSwapChain()
 {
   ASSERT(m_SwapChain != nullptr);

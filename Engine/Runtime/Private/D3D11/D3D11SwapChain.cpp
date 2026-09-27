@@ -9,6 +9,12 @@ D3D11SwapChain::D3D11SwapChain(const SwapChainParams& params)
 
 D3D11SwapChain::~D3D11SwapChain()
 {
+  ASSERT(m_RenderTargetView != nullptr);
+  if (m_RenderTargetView != nullptr)
+  {
+    m_RenderTargetView->Release();
+    m_RenderTargetView = nullptr;
+  }
   ASSERT(m_SwapChain != nullptr);
   if (m_SwapChain != nullptr)
   {

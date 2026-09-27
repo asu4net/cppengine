@@ -1,6 +1,7 @@
 #include "Runtime/Application.h"
 #include "Runtime/GraphicsInstance.h"
 #include "Runtime/GraphicsDevice.h"
+#include "Runtime/GraphicsContext.h"
 #include "Runtime/SwapChain.h"
 
 // @Note: For know we keep here both files
@@ -53,8 +54,9 @@ bool Application::Run(std::string_view name, std::uint32_t w, std::uint32_t h)
     return false;
   }
 
-  // Use the graphics instance to get a reference to the swap chain.
+  // Get references to device, context and swap chain.
   GraphicsDevice& graphicsDevice = m_GraphicsInstance->GetDevice();
+  GraphicsContext& graphicsContext = m_GraphicsInstance->GetContext();
   SwapChain& swapChain = graphicsDevice.GetSwapChain();
 
   // Run the main loop.
@@ -63,11 +65,10 @@ bool Application::Run(std::string_view name, std::uint32_t w, std::uint32_t h)
   {
     m_IsRunning = !Input::ShouldCloseWindow();
 
-    // @Review: This will go somewhere else once we do the D3D11 implementation.
-#ifdef ENGINE_OPENGL
-    glClearColor(0.1f, 0.2f, 0.3f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-#endif
+    // Clear the back buffer.
+    graphicsContext.ClearBackBuffer(swapChain, 0.1f, 0.2f, 0.3f);
+
+    // @Pending: Draw frame.
     
     // @Pending: Specify vsync on/off.
     swapChain.Present();

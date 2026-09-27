@@ -16,8 +16,10 @@ class D3D11SwapChain : public SwapChain
     void Present(bool vsync = false) override;
 
     IDXGISwapChain** GetPointer() { return &m_SwapChain; }
+    ID3D11RenderTargetView** GetRenderTargetViewPointer() { return &m_RenderTargetView; }
 
   private:
     IDXGISwapChain* m_SwapChain = nullptr;
+    ID3D11RenderTargetView* m_RenderTargetView = nullptr;
 };
 
