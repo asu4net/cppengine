@@ -1,21 +1,21 @@
 // @Note: This translation unit gets compiled inside "Runtime/GraphicsStorage.cpp"
 
-OpenGLVertexBuffer::OpenGLVertexBuffer(const VertexBufferParams& params)
+D3D11VertexBuffer::D3D11VertexBuffer(const VertexBufferParams& params)
 {
-  LOG_INFO("OpenGL VertexBuffer created.");
+  LOG_INFO("D3D11 VertexBuffer created.");
 }
 
-OpenGLVertexBuffer::~OpenGLVertexBuffer()
+D3D11VertexBuffer::~D3D11VertexBuffer()
 {
-  LOG_INFO("OpenGL VertexBuffer destroyed.");
+  LOG_INFO("D3D11 VertexBuffer destroyed.");
 }
 
-void OpenGLVertexBuffer::Use()
+void D3D11VertexBuffer::Use()
 {
-  LOG_INFO("OpenGL VertexBuffer used.");
+  LOG_INFO("D3D11 VertexBuffer used.");
 }
 
-void OpenGLVertexBuffer::SetData(const void* data, std::uint32_t size)
+void D3D11VertexBuffer::SetData(const void* data, std::uint32_t size)
 {
-  LOG_INFO("OpenGL VertexBuffer updated data.");
+  LOG_INFO("D3D11 VertexBuffer updated data.");
 }

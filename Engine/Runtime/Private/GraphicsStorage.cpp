@@ -4,11 +4,11 @@
 #ifdef ENGINE_OPENGL
 #include "glad/glad.h" 
 #elif  ENGINE_D3D11
-#else
 #define WIN32_MEAN_AND_LEAN
 #include <Windows.h>
 #include <d3d11.h>
 #include <dxgi.h>
+#else
 #error "Missing Graphics API implementation."
 #endif
 
@@ -16,12 +16,14 @@
 #include "OpenGL/OpenGLGraphicsInstance.h"
 #include "OpenGL/OpenGLGraphicsDevice.h"
 #include "OpenGL/OpenGLGraphicsContext.h"
+#include "OpenGL/OpenGLGraphicsSwapChain.h"
 #include "OpenGL/OpenGLVertexBuffer.h"
 #include "OpenGL/OpenGLShader.h"
 #elif  ENGINE_D3D11
 #include "D3D11/D3D11GraphicsInstance.h"
 #include "D3D11/D3D11GraphicsDevice.h"
 #include "D3D11/D3D11GraphicsContext.h"
+#include "D3D11/D3D11SwapChain.h"
 #include "D3D11/D3D11VertexBuffer.h"
 #include "D3D11/D3D11Shader.h"
 #else
@@ -109,6 +111,7 @@ bool GraphicsStorage::IsValid<_BASE>(GraphicsHandle handle)           \
 #include "D3D11/D3D11GraphicsInstance.cpp"
 #include "D3D11/D3D11GraphicsDevice.cpp"
 #include "D3D11/D3D11GraphicsContext.cpp"
+#include "D3D11/D3D11SwapChain.cpp"
 #include "D3D11/D3D11VertexBuffer.cpp"
 #include "D3D11/D3D11Shader.cpp"
 #else

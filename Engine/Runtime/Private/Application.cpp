@@ -1,5 +1,7 @@
 #include "Runtime/Application.h"
 #include "Runtime/GraphicsInstance.h"
+#include "Runtime/GraphicsDevice.h"
+#include "Runtime/SwapChain.h"
 
 // @Note: For know we keep here both files
 // since we are not going to expose the 
@@ -32,11 +34,28 @@ Application::Application()
 
 bool Application::Run(std::string_view name, std::uint32_t w, std::uint32_t h)
 {
-  // Setup window and graphics.
-  WindowCreation::InitWindow(name, w, h);
+  // Create the window.
+  bool windowCreated = WindowCreation::InitWindow(name, w, h);
+  if (!windowCreated)
+  {
+    LOG_ERR("Couldn't create the window!");
+    return false;
+  }
+
+  // Create the graphics instance and get a pointer.
   GraphicsInstanceParams graphicsInstanceParams{ WindowCreation::GetHandle() };
   m_GraphicsInstanceHandle = m_GraphicsStorage.Emplace<GraphicsInstance>(graphicsInstanceParams);
   m_GraphicsInstance = m_GraphicsStorage.Get<GraphicsInstance>(m_GraphicsInstanceHandle);
+
+  if (m_GraphicsInstance == nullptr)
+  {
+    LOG_ERR("Couldn't create the graphics instance!");
+    return false;
+  }
+
+  // Use the graphics instance to get a reference to the swap chain.
+  GraphicsDevice& graphicsDevice = m_GraphicsInstance->GetDevice();
+  SwapChain& swapChain = graphicsDevice.GetSwapChain();
 
   // Run the main loop.
   m_IsRunning = true;
@@ -49,7 +68,9 @@ bool Application::Run(std::string_view name, std::uint32_t w, std::uint32_t h)
     glClearColor(0.1f, 0.2f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 #endif
-    WindowCreation::Present();
+    
+    // @Pending: Specify vsync on/off.
+    swapChain.Present();
   }
   
 // @Note: Deinitialization should be done just for debugging purposes.

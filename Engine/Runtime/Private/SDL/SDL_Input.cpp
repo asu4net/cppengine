@@ -1,4 +1,4 @@
-#include "SDLInput.h"
+#include "SDL_Input.h"
 #include "SDL3/SDL.h"
 
 namespace SDLInput

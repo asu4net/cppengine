@@ -1,8 +1,8 @@
-#include "SDLOpenGLWindowCreation.h"
+#include "SDL_OpenGL_WindowCreation.h"
 #include "SDL3/SDL.h"
 #include "glad/glad.h" 
 
-namespace SDLOpenGL
+namespace SDL_OpenGL
 {
   static constexpr std::int32_t c_Major = 4;
   static constexpr std::int32_t c_Minor = 6;
@@ -43,11 +43,5 @@ namespace SDLOpenGL
   void* GetHandle()
   {
     return s_Window;
-  }
-
-  // @Pending: Move this to the SwapChain object.
-  void SwapBuffers(bool vsync)
-  {
-    SDL_GL_SwapWindow(s_Window);
   }
 }

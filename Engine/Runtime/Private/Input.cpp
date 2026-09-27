@@ -1,6 +1,6 @@
 #ifdef ENGINE_SDL
-#include "SDL/SDLInput.h"
-#include "SDL/SDLInput.cpp"
+#include "SDL/SDL_Input.h"
+#include "SDL/SDL_Input.cpp"
 #else
 #error "Missing implementation for Input!"
 #endif

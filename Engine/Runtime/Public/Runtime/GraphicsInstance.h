@@ -17,6 +17,6 @@ class GraphicsInstance
   public:
     virtual ~GraphicsInstance() = default;
 
-    virtual GraphicsDevice& GetDevice() const = 0;
-    virtual GraphicsContext& GetContext() const = 0;
+    virtual GraphicsDevice& GetDevice() = 0;
+    virtual GraphicsContext& GetContext() = 0;
 };

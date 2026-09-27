@@ -2,8 +2,11 @@
 
 #ifdef ENGINE_SDL
 #ifdef ENGINE_OPENGL
-#include "SDL/SDLOpenGLWindowCreation.h"
-#include "SDL/SDLOpenGLWindowCreation.cpp"
+#include "SDL/SDL_OpenGL_WindowCreation.h"
+#include "SDL/SDL_OpenGL_WindowCreation.cpp"
+#elif  ENGINE_D3D11
+#include "SDL/SDL_D3D11_WindowCreation.h"
+#include "SDL/SDL_D3D11_WindowCreation.cpp"
 #else
 #error "Missing SDL implementation for Window Creation!"
 #endif
@@ -17,7 +20,9 @@ namespace WindowCreation
   {
     #ifdef ENGINE_SDL
     #ifdef ENGINE_OPENGL
-    return SDLOpenGL::InitWindow(name, w, h);
+    return SDL_OpenGL::InitWindow(name, w, h);
+    #elif  ENGINE_D3D11
+    return SDL_D3D11::InitWindow(name, w, h);
     #else
     #error "Missing SDL implementation for Window Creation!"
     #endif
@@ -29,7 +34,9 @@ namespace WindowCreation
   {
     #ifdef ENGINE_SDL
     #ifdef ENGINE_OPENGL
-    SDLOpenGL::DeinitWindow();
+    SDL_OpenGL::DeinitWindow();
+    #elif  ENGINE_D3D11
+    SDL_D3D11::DeinitWindow();
     #else
     #error "Missing SDL implementation for Window Creation!"
     #endif
@@ -42,19 +49,9 @@ namespace WindowCreation
   {
     #ifdef ENGINE_SDL
     #ifdef ENGINE_OPENGL
-    return SDLOpenGL::GetHandle();
-    #else
-    #error "Missing SDL implementation for Window Creation!"
-    #endif
-    #else
-    #error "Missing implementation for Window Creation!"
-    #endif
-  }
-  void Present(bool vsync)
-  {
-    #ifdef ENGINE_SDL
-    #ifdef ENGINE_OPENGL
-    SDLOpenGL::SwapBuffers(vsync);
+    return SDL_OpenGL::GetHandle();
+    #elif  ENGINE_D3D11
+    return SDL_D3D11::GetHandle();
     #else
     #error "Missing SDL implementation for Window Creation!"
     #endif

@@ -15,10 +15,29 @@ target_precompile_headers(Runtime
     RuntimePCH.h
 )
 
+if (ENGINE_SDL)
+  target_link_libraries(Runtime
+    PRIVATE
+      SDL3::SDL3
+  )
+endif()
+
+if (ENGINE_OPENGL)
+  target_link_libraries(Runtime
+    PRIVATE
+      glad
+  )
+endif()
+
+if (WIN32)
+  target_link_libraries(Runtime 
+    PRIVATE
+      d3d11
+      dxgi
+  )
+endif()
+
 target_link_libraries(Runtime
-  PRIVATE
-    glad
-    SDL3::SDL3
   PUBLIC
     glm::glm
 )

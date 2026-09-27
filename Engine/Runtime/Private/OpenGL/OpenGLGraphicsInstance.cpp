@@ -4,12 +4,12 @@ OpenGLGraphicsInstance::OpenGLGraphicsInstance(const GraphicsInstanceParams& par
 {
   auto& graphicsStorage = Application::GetInstance().GetGraphicsStorage();
 
-  // Create the device.
+  // Alloc the device.
   GraphicsDeviceParams graphicsDeviceParams{ params.windowHandle };
   m_DeviceHandle = graphicsStorage.Emplace<GraphicsDevice>(graphicsDeviceParams);
   m_Device = graphicsStorage.Get<GraphicsDevice>(m_DeviceHandle);
 
-  // Create the instance.
+  // Alloc the context.
   GraphicsContextParams graphicsContextParams{ params.windowHandle };
   m_ContextHandle = graphicsStorage.Emplace<GraphicsContext>(graphicsContextParams);
   m_Context = graphicsStorage.Get<GraphicsContext>(m_ContextHandle);
