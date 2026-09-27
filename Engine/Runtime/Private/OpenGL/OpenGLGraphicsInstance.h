@@ -2,6 +2,9 @@
 
 #include "Runtime/GraphicsInstance.h"
 
+class OpenGLGraphicsContext;
+class OpenGLGraphicsDevice;
+
 class OpenGLGraphicsInstance : public GraphicsInstance
 {
   public:
@@ -13,12 +16,12 @@ class OpenGLGraphicsInstance : public GraphicsInstance
     OpenGLGraphicsInstance(OpenGLGraphicsInstance&&) = delete;
     OpenGLGraphicsInstance& operator=(OpenGLGraphicsInstance&&) noexcept = delete;
 
-    GraphicsDevice& GetDevice() const override;
-    GraphicsContext& GetContext() const override;
+    GraphicsDevice& GetDevice() override;
+    GraphicsContext& GetContext() override;
   private:
     GraphicsHandle m_ContextHandle;
-    GraphicsContext* m_Context;
+    OpenGLGraphicsContext* m_Context;
 
     GraphicsHandle m_DeviceHandle;
-    GraphicsDevice* m_Device;
+    OpenGLGraphicsDevice* m_Device;
 };

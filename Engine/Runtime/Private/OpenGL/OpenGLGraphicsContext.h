@@ -12,5 +12,7 @@ class OpenGLGraphicsContext : public GraphicsContext
     OpenGLGraphicsContext& operator=(const OpenGLGraphicsContext&) noexcept = delete;
     OpenGLGraphicsContext(OpenGLGraphicsContext&&) = delete;
     OpenGLGraphicsContext& operator=(OpenGLGraphicsContext&&) noexcept = delete;
+
+    void ClearBackBuffer(SwapChain& swapChain, float r = 0, float g = 0, float b = 0) override;
 };
 

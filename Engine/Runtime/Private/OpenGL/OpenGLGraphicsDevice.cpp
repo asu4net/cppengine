@@ -25,12 +25,26 @@ OpenGLGraphicsDevice::OpenGLGraphicsDevice(const GraphicsDeviceParams& params)
   }
 
   m_SDL_GLContext = context;
-  LOG_INFO("SDL OpenGL Context created!");
+  LOG_INFO("SDL OpenGL Device Context created!");
 }
 
 OpenGLGraphicsDevice::~OpenGLGraphicsDevice()
 {
+  ASSERT(m_SwapChain != nullptr);
+  if (m_SwapChain != nullptr)
+  {
+    auto& graphicsStorage = Application::GetInstance().GetGraphicsStorage();
+    graphicsStorage.Remove<SwapChain>(m_SwapChainHandle);
+    m_SwapChainHandle = {};
+    m_SwapChain = nullptr;
+  }
   SDL_GL_DestroyContext(m_SDL_GLContext);
   m_SDL_GLContext = {};
-  LOG_INFO("SDL OpenGL Context destroyed!");
+  LOG_INFO("SDL OpenGL Device Context destroyed!");
+}
+
+SwapChain& OpenGLGraphicsDevice::GetSwapChain()
+{
+  ASSERT(m_SwapChain != nullptr);
+  return *m_SwapChain;
 }

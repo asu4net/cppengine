@@ -16,7 +16,7 @@
 #include "OpenGL/OpenGLGraphicsInstance.h"
 #include "OpenGL/OpenGLGraphicsDevice.h"
 #include "OpenGL/OpenGLGraphicsContext.h"
-#include "OpenGL/OpenGLGraphicsSwapChain.h"
+#include "OpenGL/OpenGLSwapChain.h"
 #include "OpenGL/OpenGLVertexBuffer.h"
 #include "OpenGL/OpenGLShader.h"
 #elif  ENGINE_D3D11
@@ -105,6 +105,7 @@ bool GraphicsStorage::IsValid<_BASE>(GraphicsHandle handle)           \
 #include "OpenGL/OpenGLGraphicsInstance.cpp"
 #include "OpenGL/OpenGLGraphicsDevice.cpp"
 #include "OpenGL/OpenGLGraphicsContext.cpp"
+#include "OpenGL/OpenGLSwapChain.cpp"
 #include "OpenGL/OpenGLVertexBuffer.cpp"
 #include "OpenGL/OpenGLShader.cpp"
 #elif  ENGINE_D3D11
