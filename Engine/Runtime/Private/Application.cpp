@@ -69,6 +69,9 @@ bool Application::Run(std::string_view name, std::uint32_t w, std::uint32_t h)
     graphicsContext.ClearBackBuffer(swapChain, 0.1f, 0.2f, 0.3f);
 
     // @Pending: Draw frame.
+#ifdef CONFIG_DEBUG
+    m_GraphicsInstance->DrawTestTriangle();
+#endif
     
     // @Pending: Specify vsync on/off.
     swapChain.Present();

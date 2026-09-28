@@ -39,7 +39,7 @@ void D3D11GraphicsDevice::DumpDebugMessages()
 #ifdef CONFIG_DEBUG
   if (m_Device == nullptr)
   {
-    LOG_ERR("D3D11 Invalid device when calling DumpDebugMessages()!");
+    //LOG_ERR("D3D11 Invalid device when calling DumpDebugMessages()!");
     return;
   }
 
@@ -48,10 +48,13 @@ void D3D11GraphicsDevice::DumpDebugMessages()
 
   if (FAILED(result))
   {
+    //LOG_INFO("D3D11 Couldn't get info queue.");
     return;
   }
 
-  const UINT64 messageCount = infoQueue->GetNumStoredMessages();
+  std::uint32_t messageCount = infoQueue->GetNumStoredMessages();
+  //LOG_INFO( "D3D11 Stored messages: {}", infoQueue->GetNumStoredMessages());
+  //LOG_INFO( "D3D11 Allowed messages: {}", infoQueue->GetNumStoredMessagesAllowedByRetrievalFilter());
 
   for (std::uint64_t i = 0; i < messageCount; ++i)
   {
@@ -65,7 +68,7 @@ void D3D11GraphicsDevice::DumpDebugMessages()
     infoQueue->GetMessage(i, message, &messageLength);
 
     // Conectar con tu sistema de logging.
-    LOG_ERR("[D3D11] {}", message->pDescription);
+    LOG_INFO("[D3D11] {}", message->pDescription);
   }
 
   infoQueue->ClearStoredMessages();

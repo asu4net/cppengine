@@ -90,6 +90,8 @@ D3D11GraphicsInstance::D3D11GraphicsInstance(const GraphicsInstanceParams& param
     m_Context->GetPointer()                 // Handle to the device context.
   );
 
+  LOG_INFO( "D3D11_CREATE_DEVICE_DEBUG: {}", (flags & D3D11_CREATE_DEVICE_DEBUG) != 0);
+
   if (FAILED(result))
   {
     LOG_ERR("D3D11 Error creating the device and the swap chain: 0x{:08X}.", static_cast<unsigned>(result));
@@ -108,7 +110,21 @@ D3D11GraphicsInstance::D3D11GraphicsInstance(const GraphicsInstanceParams& param
 
   // Config the debug layer.
 #ifdef CONFIG_DEBUG
-  LOG_INFO("D3D11 Enabled debug layer.");
+
+  ID3D11Debug* debug = nullptr;
+
+  HRESULT hr = d3d11DeviceObject->QueryInterface(
+    __uuidof(ID3D11Debug),
+    reinterpret_cast<void**>(&debug)
+  );
+
+  LOG_INFO("ID3D11 Debug layer available: {}", SUCCEEDED(hr));
+
+  if (SUCCEEDED(hr))
+  {
+    debug->Release();
+  }
+
   ID3D11InfoQueue* infoQueue = nullptr;
 
   result = d3d11DeviceObject->QueryInterface(
@@ -118,14 +134,15 @@ D3D11GraphicsInstance::D3D11GraphicsInstance(const GraphicsInstanceParams& param
 
   if (SUCCEEDED(result))
   {
+    LOG_INFO("D3D11 Enabled info queue.");
     infoQueue->SetBreakOnSeverity(
       D3D11_MESSAGE_SEVERITY_CORRUPTION,
-      TRUE
+      FALSE
     );
 
     infoQueue->SetBreakOnSeverity(
       D3D11_MESSAGE_SEVERITY_ERROR,
-      TRUE
+      FALSE
     );
 
     infoQueue->Release();
@@ -184,4 +201,54 @@ GraphicsContext& D3D11GraphicsInstance::GetContext()
 {
   ASSERT(m_Context != nullptr);
   return *m_Context;
+}
+
+void D3D11GraphicsInstance::DrawTestTriangle()
+{
+  auto* context = *m_Context->GetPointer();
+  auto* device  = *m_Device->GetPointer();
+
+  // Triangle vertex position data type.
+  struct Vertex
+  {
+    float x;
+    float y;
+  };
+
+  // Simple triangle vertex positions.
+  const Vertex vertices[] =
+  {
+    { +0.0f, +0.5f },
+    { +0.5f, -0.5f },
+    { -0.5f, -0.5f },
+  };
+
+  D3D11_BUFFER_DESC bufferDesc = {};
+  bufferDesc.ByteWidth = sizeof(vertices);
+  bufferDesc.Usage = D3D11_USAGE_DEFAULT;
+  bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+  bufferDesc.CPUAccessFlags = 0u;
+  bufferDesc.MiscFlags = 0u;
+  // Size of every vertex.
+  bufferDesc.StructureByteStride = sizeof(Vertex);
+
+  D3D11_SUBRESOURCE_DATA data = {};
+  data.pSysMem = vertices;
+  // These two are for textures.
+  data.SysMemPitch = 0u;
+  data.SysMemSlicePitch = 0u;
+
+  ID3D11Buffer* vertexBuffer = nullptr;
+  HRESULT result = device->CreateBuffer(&bufferDesc, &data, &vertexBuffer);
+  if FAILED(result)
+  {
+    m_Device->DumpDebugMessages();
+    return;
+  }
+  std::uint32_t stride = sizeof(Vertex);
+  std::uint32_t offset = 0u;
+  m_Device->DumpDebugMessages();
+  context->IASetVertexBuffers(/* start slot */ 0u, /* num of buffers */ 1u, &vertexBuffer, &stride, &offset);
+  m_Device->DumpDebugMessages();
+  context->Draw(3u, 0u);
 }

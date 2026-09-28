@@ -31,6 +31,7 @@ namespace SDL_OpenGL
       SDL_Quit();
       return false;
     }
+    return true;
   }
 
   void DeinitWindow()

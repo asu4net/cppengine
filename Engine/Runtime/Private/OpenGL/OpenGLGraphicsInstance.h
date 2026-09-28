@@ -18,6 +18,7 @@ class OpenGLGraphicsInstance : public GraphicsInstance
 
     GraphicsDevice& GetDevice() override;
     GraphicsContext& GetContext() override;
+    void DrawTestTriangle() override {};
   private:
     GraphicsHandle m_ContextHandle;
     OpenGLGraphicsContext* m_Context;
