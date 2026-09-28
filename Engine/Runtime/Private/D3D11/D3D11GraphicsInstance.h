@@ -18,6 +18,7 @@ class D3D11GraphicsInstance : public GraphicsInstance
 
     GraphicsDevice& GetDevice() override;
     GraphicsContext& GetContext() override;
+
   private:
     GraphicsHandle m_ContextHandle;
     D3D11GraphicsContext* m_Context = nullptr;

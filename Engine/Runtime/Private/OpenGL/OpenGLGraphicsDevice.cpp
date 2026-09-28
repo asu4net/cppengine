@@ -1,5 +1,20 @@
 #include "OpenGLGraphicsDevice.h"
 
+#ifdef CONFIG_DEBUG
+  static void APIENTRY OpenGLDebugCallback(
+      GLenum source, 
+      GLenum type, 
+      GLuint id, 
+      GLenum severity, 
+      GLsizei length, 
+      const GLchar* message, 
+      const void* userParam
+  )
+  {
+    LOG_INFO("[OpenGL Debug] {}", message);
+  }
+#endif
+
 OpenGLGraphicsDevice::OpenGLGraphicsDevice(const GraphicsDeviceParams& params)
 {
   ASSERT(params.windowHandle != nullptr);
@@ -26,6 +41,24 @@ OpenGLGraphicsDevice::OpenGLGraphicsDevice(const GraphicsDeviceParams& params)
 
   m_SDL_GLContext = context;
   LOG_INFO("SDL OpenGL Device Context created!");
+
+#ifdef CONFIG_DEBUG
+    using cstring = const char*;
+    cstring vendor   = reinterpret_cast<cstring>(glGetString(GL_VENDOR));
+    cstring renderer = reinterpret_cast<cstring>(glGetString(GL_RENDERER));
+    cstring version  = reinterpret_cast<cstring>(glGetString(GL_VERSION));
+    cstring shading  = reinterpret_cast<cstring>(glGetString(GL_SHADING_LANGUAGE_VERSION));
+
+    LOG_INFO("OpenGL Vendor:   {}", vendor);
+    LOG_INFO("OpenGL Renderer: {}", renderer);
+    LOG_INFO("OpenGL Version:  {}", version);
+    LOG_INFO("GLSL Version:    {}", shading);
+
+    LOG_INFO("OpenGL Debug callback registered!");
+    glEnable(GL_DEBUG_OUTPUT);
+    glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+    glDebugMessageCallback(OpenGLDebugCallback, nullptr);
+#endif
 }
 
 OpenGLGraphicsDevice::~OpenGLGraphicsDevice()

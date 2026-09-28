@@ -12,4 +12,5 @@ class GraphicsDevice
   public:
     virtual ~GraphicsDevice() = default;
     virtual SwapChain& GetSwapChain() = 0;
+    virtual void DumpDebugMessages() = 0;
 };

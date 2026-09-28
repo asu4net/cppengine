@@ -29,6 +29,10 @@ class OpenGLGraphicsDevice : public GraphicsDevice
       m_SwapChain = swapChain;
     };
 
+    // @Note: This will remain unimplemented, since OpenGL can
+    // throw this messages via debug callback.
+    void DumpDebugMessages() override {}
+
   private:
 #if ENGINE_SDL
     SDL_GLContext m_SDL_GLContext;

@@ -69,12 +69,17 @@ D3D11GraphicsInstance::D3D11GraphicsInstance(const GraphicsInstanceParams& param
   // For now we don't specify any flag here.
   desc.Flags = 0;
 
+  std::uint32_t flags = 0;
+#ifdef CONFIG_DEBUG
+  flags |= D3D11_CREATE_DEVICE_DEBUG;
+#endif
+
   // Create the device, the device context, and the swap chain.
   HRESULT result = D3D11CreateDeviceAndSwapChain(
     nullptr,                                // pAdapter: (nullptr -> choose the default adapter)
     D3D_DRIVER_TYPE_HARDWARE,               // DriverType
     nullptr,                                // Software: This gives a handle to load a sofware driver.
-    0,                                      // Flags: @Pending
+    flags,                                  // Flags: For now we just use them for enabling the debug layer.
     nullptr,                                // pFeatureLevels
     0,                                      // FeatureLevels
     D3D11_SDK_VERSION,                      // With this macro it uses this system SDK version.
@@ -90,6 +95,42 @@ D3D11GraphicsInstance::D3D11GraphicsInstance(const GraphicsInstanceParams& param
     LOG_ERR("D3D11 Error creating the device and the swap chain: 0x{:08X}.", static_cast<unsigned>(result));
     std::exit(EXIT_FAILURE);
   }
+
+  // Get the device
+  auto** d3d11DeviceObjectHandle = m_Device->GetPointer();
+  auto* d3d11DeviceObject = d3d11DeviceObjectHandle != nullptr ? *d3d11DeviceObjectHandle : nullptr;
+  ASSERT(d3d11DeviceObject != nullptr);
+  if (d3d11DeviceObject == nullptr)
+  {
+    LOG_ERR("D3D11 unhandled error retrieving the d3d11 swap chain.");
+    std::exit(EXIT_FAILURE);
+  }
+
+  // Config the debug layer.
+#ifdef CONFIG_DEBUG
+  LOG_INFO("D3D11 Enabled debug layer.");
+  ID3D11InfoQueue* infoQueue = nullptr;
+
+  result = d3d11DeviceObject->QueryInterface(
+    __uuidof(ID3D11InfoQueue),
+    reinterpret_cast<void**>(&infoQueue)
+  );
+
+  if (SUCCEEDED(result))
+  {
+    infoQueue->SetBreakOnSeverity(
+      D3D11_MESSAGE_SEVERITY_CORRUPTION,
+      TRUE
+    );
+
+    infoQueue->SetBreakOnSeverity(
+      D3D11_MESSAGE_SEVERITY_ERROR,
+      TRUE
+    );
+
+    infoQueue->Release();
+  }
+#endif
 
   // Gain access to the render target, and give the full ownership of it
   // to the swap chain.
@@ -144,4 +185,3 @@ GraphicsContext& D3D11GraphicsInstance::GetContext()
   ASSERT(m_Context != nullptr);
   return *m_Context;
 }
-

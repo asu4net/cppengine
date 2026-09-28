@@ -72,6 +72,10 @@ bool Application::Run(std::string_view name, std::uint32_t w, std::uint32_t h)
     
     // @Pending: Specify vsync on/off.
     swapChain.Present();
+
+#ifdef CONFIG_DEBUG
+    graphicsDevice.DumpDebugMessages();
+#endif
   }
   
 // @Note: Deinitialization should be done just for debugging purposes.

@@ -27,6 +27,8 @@ class D3D11GraphicsDevice : public GraphicsDevice
       m_SwapChain = swapChain;
     };
 
+    void DumpDebugMessages() override;
+
   private:
     ID3D11Device* m_Device = nullptr;
     GraphicsHandle m_SwapChainHandle;
