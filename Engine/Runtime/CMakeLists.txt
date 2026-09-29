@@ -34,6 +34,7 @@ if (WIN32)
     PRIVATE
       d3d11
       dxgi
+      D3DCompiler
   )
 endif()
 

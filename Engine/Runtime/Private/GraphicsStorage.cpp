@@ -8,11 +8,14 @@
 #include <Windows.h>
 #include <d3d11.h>
 #include <dxgi.h>
+#include <d3dcompiler.h>
 #else
 #error "Missing Graphics API implementation."
 #endif
 
 #ifdef ENGINE_OPENGL
+#include "Shaders/GLSL/GLSLTestTriangle.h"
+#include "Shaders/GLSL/GLSLFlatColor.h"
 #include "OpenGL/OpenGLGraphicsInstance.h"
 #include "OpenGL/OpenGLGraphicsDevice.h"
 #include "OpenGL/OpenGLGraphicsContext.h"
@@ -20,6 +23,8 @@
 #include "OpenGL/OpenGLVertexBuffer.h"
 #include "OpenGL/OpenGLShader.h"
 #elif  ENGINE_D3D11
+#include "Shaders/HLSL/HLSLTestTriangle.h"
+#include "Shaders/HLSL/HLSLFlatColor.h"
 #include "D3D11/D3D11GraphicsInstance.h"
 #include "D3D11/D3D11GraphicsDevice.h"
 #include "D3D11/D3D11GraphicsContext.h"

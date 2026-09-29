@@ -74,7 +74,7 @@ bool Application::Run(std::string_view name, std::uint32_t w, std::uint32_t h)
 #endif
     
     // @Pending: Specify vsync on/off.
-    swapChain.Present();
+    swapChain.Present(/*vsync*/ true);
 
 #ifdef CONFIG_DEBUG
     graphicsDevice.DumpDebugMessages();
