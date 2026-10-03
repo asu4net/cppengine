@@ -45,15 +45,18 @@ endif()
 
 message(STATUS "Graphics API: ${ENGINE_GRAPHICS_API}")
 
-option(ENGINE_SDL    "Use SDL"          ON  )
+# @Pending: Do the same we did on graphics api for window backends
+# and apply thet to WindowCreation.cpp
+option(ENGINE_SDL "Use SDL" ON)
 
 add_subdirectory(Engine/Runtime)
 
 if (ENGINE_SDL)
   add_subdirectory(Engine/ThirdParty/SDL)
 endif()
+# @Pending block ---------------------------------------------------
 
-if (ENGINE_OPENGL)
+if(ENGINE_GRAPHICS_API STREQUAL "OPENGL")
   add_subdirectory(Engine/ThirdParty/glad)
 endif()
 
@@ -65,8 +68,11 @@ add_subdirectory(Launcher)
 # [command] cmake -S . -B Build
 # -S: Where is the root CMakeLists.txt
 # -B: Where should cmake generate the build folder.
+
+# Examples:
 # Choosing API: cmake -S . -B Build -DENGINE_GRAPHICS_API=OPENGL
 # Choosing Option: cmake -S . -B Build -DENGINE_SDL=ON
+# Fresh Build: cmake --fresh -S . -B build
 
 # [command] cmake --build Build
 # This uses the files generated in the build folder to
