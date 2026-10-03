@@ -65,9 +65,12 @@ add_subdirectory(Launcher)
 # [command] cmake -S . -B Build
 # -S: Where is the root CMakeLists.txt
 # -B: Where should cmake generate the build folder.
+# Choosing API: cmake -S . -B Build -DENGINE_GRAPHICS_API=OPENGL
+# Choosing Option: cmake -S . -B Build -DENGINE_SDL=ON
 
 # [command] cmake --build Build
 # This uses the files generated in the build folder to
 # compile the projects.
 
 # Regular workflow on Windows: cls && cmake --build Build && call "Binaries/Debug/game.exe"
+
