@@ -1,7 +1,6 @@
 #include "Runtime/Application.h"
 #include "Runtime/GraphicsInstance.h"
 #include "Runtime/GraphicsDevice.h"
-#include "Runtime/GraphicsContext.h"
 #include "Runtime/SwapChain.h"
 
 // @Note: For know we keep here both files
@@ -54,11 +53,6 @@ bool Application::Run(std::string_view name, std::uint32_t w, std::uint32_t h)
     return false;
   }
 
-  // Get references to device, context and swap chain.
-  GraphicsDevice& graphicsDevice = m_GraphicsInstance->GetDevice();
-  GraphicsContext& graphicsContext = m_GraphicsInstance->GetContext();
-  SwapChain& swapChain = graphicsDevice.GetSwapChain();
-
   // Run the main loop.
   m_IsRunning = true;
   while (m_IsRunning)
@@ -66,7 +60,7 @@ bool Application::Run(std::string_view name, std::uint32_t w, std::uint32_t h)
     m_IsRunning = !Input::ShouldCloseWindow();
 
     // Clear the back buffer.
-    graphicsContext.ClearBackBuffer(swapChain, 0.1f, 0.2f, 0.3f);
+    m_GraphicsInstance->GetDevice().ClearBackBuffer(0.1f, 0.2f, 0.3f);
 
     // @Pending: Draw frame.
 #ifdef CONFIG_DEBUG
@@ -74,10 +68,10 @@ bool Application::Run(std::string_view name, std::uint32_t w, std::uint32_t h)
 #endif
     
     // @Pending: Specify vsync on/off.
-    swapChain.Present(/*vsync*/ true);
+    m_GraphicsInstance->GetDevice().GetSwapChain().Present(/*vsync*/ true);
 
 #ifdef CONFIG_DEBUG
-    graphicsDevice.DumpDebugMessages();
+    m_GraphicsInstance->GetDevice().DumpDebugMessages();
 #endif
   }
   

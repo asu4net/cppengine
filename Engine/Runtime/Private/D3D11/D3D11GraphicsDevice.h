@@ -18,19 +18,15 @@ class D3D11GraphicsDevice : public GraphicsDevice
 
     SwapChain& GetSwapChain() override;
 
-    ID3D11Device** GetPointer() { return &m_Device; }
-
-    // @Note: Intended to be called from the graphics instance.
-    void SetSwapChain(GraphicsHandle swapChainHandle, D3D11SwapChain* swapChain) 
-    { 
-      m_SwapChainHandle = swapChainHandle;
-      m_SwapChain = swapChain;
-    };
+    ID3D11DeviceContext* GetNativeContext() { return m_Context; } 
+    ID3D11Device* GetNativeDevice() { return m_Device; } 
 
     void DumpDebugMessages() override;
+    void ClearBackBuffer(float r = 0, float g = 0, float b = 0) override;
 
   private:
     ID3D11Device* m_Device = nullptr;
+    ID3D11DeviceContext* m_Context = nullptr;
     GraphicsHandle m_SwapChainHandle;
     D3D11SwapChain* m_SwapChain = nullptr;
 };

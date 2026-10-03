@@ -10,12 +10,6 @@ OpenGLGraphicsInstance::OpenGLGraphicsInstance(const GraphicsInstanceParams& par
   auto* deviceInterface = graphicsStorage.Get<GraphicsDevice>(m_DeviceHandle);
   m_Device = static_cast<OpenGLGraphicsDevice*>(deviceInterface);
 
-  // Alloc the context.
-  GraphicsContextParams graphicsContextParams{ params.windowHandle };
-  m_ContextHandle = graphicsStorage.Emplace<GraphicsContext>(graphicsContextParams);
-  auto* contextInterface = graphicsStorage.Get<GraphicsContext>(m_ContextHandle);
-  m_Context = static_cast<OpenGLGraphicsContext*>(contextInterface);
-
   // Alloc the Swap Chain.
   // @Note: Obvioulsy OpenGL does not have an exposed swap chain. This is
   // just an interface to call swap buffers on the GL state machine and 
@@ -38,7 +32,6 @@ OpenGLGraphicsInstance::OpenGLGraphicsInstance(const GraphicsInstanceParams& par
 OpenGLGraphicsInstance::~OpenGLGraphicsInstance()
 {
   auto& graphicsStorage = Application::GetInstance().GetGraphicsStorage();
-  graphicsStorage.Remove<GraphicsContext>(m_ContextHandle);
   graphicsStorage.Remove<GraphicsDevice>(m_DeviceHandle);
 }
 
@@ -46,10 +39,4 @@ GraphicsDevice& OpenGLGraphicsInstance::GetDevice()
 {
   ASSERT(m_Device != nullptr);
   return *m_Device;
-}
-
-GraphicsContext& OpenGLGraphicsInstance::GetContext()
-{
-  ASSERT(m_Context != nullptr);
-  return *m_Context;
 }

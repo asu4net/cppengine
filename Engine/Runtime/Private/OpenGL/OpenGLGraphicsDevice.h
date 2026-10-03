@@ -33,6 +33,8 @@ class OpenGLGraphicsDevice : public GraphicsDevice
     // throw this messages via debug callback.
     void DumpDebugMessages() override {}
 
+    void ClearBackBuffer(float r = 0, float g = 0, float b = 0) override;
+
   private:
 #if ENGINE_SDL
     SDL_GLContext m_SDL_GLContext;

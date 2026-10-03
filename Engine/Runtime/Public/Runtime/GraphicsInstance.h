@@ -18,6 +18,5 @@ class GraphicsInstance
     virtual ~GraphicsInstance() = default;
 
     virtual GraphicsDevice& GetDevice() = 0;
-    virtual GraphicsContext& GetContext() = 0;
     virtual void DrawTestTriangle() = 0;
 };

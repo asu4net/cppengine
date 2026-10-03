@@ -40,7 +40,7 @@ OpenGLGraphicsDevice::OpenGLGraphicsDevice(const GraphicsDeviceParams& params)
   }
 
   m_SDL_GLContext = context;
-  LOG_INFO("SDL OpenGL Device Context created!");
+  LOG_INFO("SDL OpenGL Context created!");
 
 #ifdef CONFIG_DEBUG
     using cstring = const char*;
@@ -80,4 +80,11 @@ SwapChain& OpenGLGraphicsDevice::GetSwapChain()
 {
   ASSERT(m_SwapChain != nullptr);
   return *m_SwapChain;
+}
+
+void OpenGLGraphicsDevice::ClearBackBuffer(float r, float g, float b)
+{
+  // @Note: OpenGL is in Peaceful mode.
+  glClearColor(r, g, b, 1.0f);
+  glClear(GL_COLOR_BUFFER_BIT);
 }

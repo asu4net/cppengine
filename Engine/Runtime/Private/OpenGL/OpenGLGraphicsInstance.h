@@ -17,12 +17,9 @@ class OpenGLGraphicsInstance : public GraphicsInstance
     OpenGLGraphicsInstance& operator=(OpenGLGraphicsInstance&&) noexcept = delete;
 
     GraphicsDevice& GetDevice() override;
-    GraphicsContext& GetContext() override;
     void DrawTestTriangle() override {};
-  private:
-    GraphicsHandle m_ContextHandle;
-    OpenGLGraphicsContext* m_Context;
 
+  private:
     GraphicsHandle m_DeviceHandle;
     OpenGLGraphicsDevice* m_Device;
 };
