@@ -29,10 +29,23 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type" FORCE)
 endif()
 
+set(ENGINE_GRAPHICS_API "" CACHE STRING
+    "Graphics API: SDL, D3D11, OpenGL, Metal"
+)
+
+if(ENGINE_GRAPHICS_API STREQUAL "")
+    if(WIN32)
+        set(ENGINE_GRAPHICS_API "D3D11" CACHE STRING "" FORCE)
+    elseif(APPLE)
+        set(ENGINE_GRAPHICS_API "METAL" CACHE STRING "" FORCE)
+    else()
+        set(ENGINE_GRAPHICS_API "OPENGL" CACHE STRING "" FORCE)
+    endif()
+endif()
+
+message(STATUS "Graphics API: ${ENGINE_GRAPHICS_API}")
+
 option(ENGINE_SDL    "Use SDL"          ON  )
-option(ENGINE_D3D11  "Use Direct3D 11"  ON  )
-option(ENGINE_OPENGL "Use OpenGL"       OFF )
-option(ENGINE_METAL  "Use Metal"        OFF )
 
 add_subdirectory(Engine/Runtime)
 

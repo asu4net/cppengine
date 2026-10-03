@@ -22,20 +22,23 @@ if (ENGINE_SDL)
   )
 endif()
 
-if (ENGINE_OPENGL)
-  target_link_libraries(Runtime
-    PRIVATE
-      glad
-  )
-endif()
-
-if (WIN32)
+if(ENGINE_GRAPHICS_API STREQUAL "D3D11")
+  target_compile_definitions(Runtime PRIVATE ENGINE_D3D11)
   target_link_libraries(Runtime 
     PRIVATE
       d3d11
       dxgi
       D3DCompiler
   )
+elseif(ENGINE_GRAPHICS_API STREQUAL "OPENGL")
+  target_compile_definitions(Runtime PRIVATE ENGINE_OPENGL)
+  target_link_libraries(Runtime
+    PRIVATE
+      glad
+  )
+elseif(ENGINE_GRAPHICS_API STREQUAL "METAL")
+  target_compile_definitions(Runtime PRIVATE ENGINE_METAL)
+  # @Pending: Link with metal stuff.
 endif()
 
 target_link_libraries(Runtime
@@ -50,16 +53,4 @@ target_compile_definitions(Runtime
 
 if (ENGINE_SDL)
   target_compile_definitions(Runtime PRIVATE ENGINE_SDL)
-endif()
-
-if (ENGINE_OPENGL)
-  target_compile_definitions(Runtime PRIVATE ENGINE_OPENGL)
-endif()
-
-if (ENGINE_D3D11)
-  target_compile_definitions(Runtime PRIVATE ENGINE_D3D11)
-endif()
-
-if (ENGINE_METAL)
-  target_compile_definitions(Runtime PRIVATE ENGINE_METAL)
 endif()
