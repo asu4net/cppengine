@@ -17,7 +17,6 @@ class OpenGLGraphicsInstance : public GraphicsInstance
     OpenGLGraphicsInstance& operator=(OpenGLGraphicsInstance&&) noexcept = delete;
 
     GraphicsDevice& GetDevice() override;
-    void DrawTestTriangle() override {};
 
   private:
     GraphicsHandle m_DeviceHandle;

@@ -12,6 +12,11 @@
 #include "Input.h"
 #include "Input.cpp"
 
+// @Pending: REMOVE LATER
+#if defined(CONFIG_DEBUG) && defined(ENGINE_D3D11)
+#include "D3D11/D3D11GraphicsInstance.h"
+#endif
+
 static Application* s_CurrentApplication = nullptr;
 
 Application& Application::GetInstance()
@@ -63,8 +68,9 @@ bool Application::Run(std::string_view name, std::uint32_t w, std::uint32_t h)
     m_GraphicsInstance->GetDevice().ClearBackBuffer(0.1f, 0.2f, 0.3f);
 
     // @Pending: Draw frame.
-#ifdef CONFIG_DEBUG
-    m_GraphicsInstance->DrawTestTriangle();
+#if defined(CONFIG_DEBUG) && defined(ENGINE_D3D11)
+    auto* instance = static_cast<D3D11GraphicsInstance*>(m_GraphicsInstance);
+    instance->DrawTestTriangle();
 #endif
     
     // @Pending: Specify vsync on/off.

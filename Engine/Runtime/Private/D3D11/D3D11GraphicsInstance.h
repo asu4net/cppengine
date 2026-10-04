@@ -17,7 +17,7 @@ class D3D11GraphicsInstance : public GraphicsInstance
     D3D11GraphicsInstance& operator=(D3D11GraphicsInstance&&) noexcept = delete;
 
     GraphicsDevice& GetDevice() override;
-    void DrawTestTriangle() override;
+    void DrawTestTriangle();
 
   private:
     GraphicsHandle m_DeviceHandle;
