@@ -2,20 +2,17 @@
 
 D3D11GraphicsInstance::D3D11GraphicsInstance(const GraphicsInstanceParams& params)
 {
-  auto& graphicsStorage = Application::GetInstance().GetGraphicsStorage();
-
   // Alloc the device.
   GraphicsDeviceParams graphicsDeviceParams{ params.windowHandle };
-  m_DeviceHandle = graphicsStorage.Emplace<GraphicsDevice>(graphicsDeviceParams);
-  m_Device = static_cast<D3D11GraphicsDevice*>(graphicsStorage.Get<GraphicsDevice>(m_DeviceHandle));
+  m_DeviceHandle = Application::GetInstance().GetGraphicsStorage().Emplace<GraphicsDevice>(graphicsDeviceParams);
+  m_Device = static_cast<D3D11GraphicsDevice*>(Application::GetInstance().GetGraphicsStorage().Get<GraphicsDevice>(m_DeviceHandle));
   // @Pending: Check if creation went good.
   LOG_INFO("D3D11 Graphics instance created!");
 }
 
 D3D11GraphicsInstance::~D3D11GraphicsInstance()
 {
-  auto& graphicsStorage = Application::GetInstance().GetGraphicsStorage();
-  graphicsStorage.Remove<GraphicsDevice>(m_DeviceHandle);
+  Application::GetInstance().GetGraphicsStorage().Remove<GraphicsDevice>(m_DeviceHandle);
   LOG_INFO("D3D11 Graphics instance destroyed!");
 }
 

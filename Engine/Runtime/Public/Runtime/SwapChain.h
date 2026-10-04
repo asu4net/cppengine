@@ -4,6 +4,8 @@
 
 struct SwapChainParams
 {
+  void* nativeDevice = nullptr;
+  void* nativeSwapChain = nullptr;
 };
 
 class SwapChain

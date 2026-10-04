@@ -2,8 +2,48 @@
 
 D3D11SwapChain::D3D11SwapChain(const SwapChainParams& params)
 {
-  // @Note: The graphics instance is responsible to create
-  // this and give a value to the d3d11 pointer.
+  ASSERT(params.nativeSwapChain != nullptr);
+  if (params.nativeSwapChain == nullptr)
+  {
+    LOG_ERR("D3D11 Error: The nativeSwapChain pointer can't be nullptr.");
+    std::exit(EXIT_FAILURE);
+  }
+
+  ASSERT(params.nativeDevice != nullptr);
+  if (params.nativeDevice == nullptr)
+  {
+    LOG_ERR("D3D11 Error: The nativeDevice pointer can't be nullptr.");
+    std::exit(EXIT_FAILURE);
+  }
+
+  // @Note: We trust that the native pointers provided are of 
+  // the right types.   
+  m_SwapChain = reinterpret_cast<IDXGISwapChain*>(params.nativeSwapChain);
+  auto* nativeDevice = reinterpret_cast<ID3D11Device*>(params.nativeDevice);
+
+  // Create the render target view.
+
+  // Get the back buffer.
+  ID3D11Resource* backBuffer = nullptr;
+  m_SwapChain->GetBuffer(0, __uuidof(ID3D11Resource), reinterpret_cast<void**>(&backBuffer));
+  ASSERT(backBuffer != nullptr);
+
+  if (backBuffer == nullptr)
+  {
+    LOG_ERR("D3D11 Error retrieving the back buffer.");
+    std::exit(EXIT_FAILURE);
+  }
+
+  // Create the render target view, filling the pointer in the swap chain.
+  ID3D11RenderTargetView* nativeRenderTargetView = nullptr;
+  nativeDevice->CreateRenderTargetView(backBuffer, nullptr, &nativeRenderTargetView);
+  // @Pending check if valid renderTargetView
+  m_RenderTargetView = nativeRenderTargetView;
+  
+  // We don't need the back buffer anymore.
+  backBuffer->Release();
+  backBuffer = nullptr;
+
   LOG_INFO("D3D11 Swap Chain created!");
 }
 

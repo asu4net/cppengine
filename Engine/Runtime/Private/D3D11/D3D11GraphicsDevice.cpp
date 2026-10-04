@@ -2,17 +2,19 @@
 
 D3D11GraphicsDevice::D3D11GraphicsDevice(const GraphicsDeviceParams& params)
 {
-  // Create the d3d11 device, device context and swap chain.
   ASSERT(params.windowHandle != nullptr);
+  if (params.windowHandle == nullptr)
+  {
+    LOG_ERR("D3D11 Error: Invalid device handle provided to SwapChain.");
+    std::exit(EXIT_FAILURE);
+  }
+
+  // Trust the windowHandle is an HWND.
   HWND window = reinterpret_cast<HWND>(params.windowHandle);
 
-  // Alloc the Swap Chain.
-  SwapChainParams swapChainParams;
-  m_SwapChainHandle = Application::GetInstance().GetGraphicsStorage().Emplace<SwapChain>(swapChainParams);
-  m_SwapChain = static_cast<D3D11SwapChain*>(Application::GetInstance().GetGraphicsStorage().Get<SwapChain>(m_SwapChainHandle));
-
-  // Swap chain settings.
+  // Create the d3d11 device, device context and swap chain.
   IDXGISwapChain* nativeSwapChain = nullptr;
+
   DXGI_SWAP_CHAIN_DESC desc = {};
 
   // Will use the window size.
@@ -81,7 +83,12 @@ D3D11GraphicsDevice::D3D11GraphicsDevice(const GraphicsDeviceParams& params)
     std::exit(EXIT_FAILURE);
   }
 
-  m_SwapChain->SetNativeSwapChain(nativeSwapChain);
+  // Alloc the Swap Chain.
+  SwapChainParams swapChainParams;
+  swapChainParams.nativeSwapChain = nativeSwapChain;
+  swapChainParams.nativeDevice = m_Device;
+  m_SwapChainHandle = Application::GetInstance().GetGraphicsStorage().Emplace<SwapChain>(swapChainParams);
+  m_SwapChain = static_cast<D3D11SwapChain*>(Application::GetInstance().GetGraphicsStorage().Get<SwapChain>(m_SwapChainHandle));
 
   // Config the debug layer.
 #ifdef CONFIG_DEBUG
@@ -123,29 +130,6 @@ D3D11GraphicsDevice::D3D11GraphicsDevice(const GraphicsDeviceParams& params)
     infoQueue->Release();
   }
 #endif
-
-  // Gain access to the render target, and give the full ownership of it
-  // to the swap chain.
-
-  // Get the back buffer
-  ID3D11Resource* backBuffer = nullptr;
-  nativeSwapChain->GetBuffer(0, __uuidof(ID3D11Resource), reinterpret_cast<void**>(&backBuffer));
-  ASSERT(backBuffer != nullptr);
-  if (backBuffer == nullptr)
-  {
-    LOG_ERR("D3D11 Error retrieving the back buffer.");
-    std::exit(EXIT_FAILURE);
-  }
-
-  // Create the render target view, filling the pointer in the swap chain.
-  ID3D11RenderTargetView* nativeRenderTargetView = nullptr;
-  m_Device->CreateRenderTargetView(backBuffer, nullptr, &nativeRenderTargetView);
-  // @Pending check if valid renderTargetView
-  m_SwapChain->SetNativeRenderTargetView(nativeRenderTargetView);
-  
-  // We don't need the back buffer anymore.
-  backBuffer->Release();
-  backBuffer = nullptr;
 
   LOG_INFO("D3D11 Device created!");
 }

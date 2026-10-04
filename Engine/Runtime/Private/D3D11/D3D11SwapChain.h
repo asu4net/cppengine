@@ -2,6 +2,8 @@
 
 #include "Runtime/SwapChain.h"
 
+class D3D11GraphicsDevice;
+
 class D3D11SwapChain : public SwapChain
 {
   public:
@@ -14,17 +16,6 @@ class D3D11SwapChain : public SwapChain
     D3D11SwapChain& operator=(D3D11SwapChain&&) noexcept = delete;
 
     void Present(bool vsync = false) override;
-
-    void SetNativeSwapChain(IDXGISwapChain* nativeSwapChain) 
-    { 
-      m_SwapChain = nativeSwapChain; 
-    }
-
-    void SetNativeRenderTargetView(ID3D11RenderTargetView* nativeRenderTargetView) 
-    { 
-      m_RenderTargetView = nativeRenderTargetView; 
-    }
-
     ID3D11RenderTargetView* GetNativeRenderTargetView() const { return m_RenderTargetView; }
 
   private:
