@@ -1,5 +1,37 @@
 #include "D3D11GraphicsDevice.h"
 
+ID3D11Device* D3D11GraphicsDevice::SafeGetNativeDevice(GraphicsHandle deviceHandle)
+{
+  bool validDevice = Application::GetInstance().GetGraphicsStorage().IsValid(deviceHandle);
+  ASSERT(validDevice);
+  if (!validDevice)
+  {
+      LOG_ERR("D3D11 error! Can't properly construct the resource due to missing device pointer.");
+      return nullptr;
+  }
+
+  auto* baseDevice = Application::GetInstance().GetGraphicsStorage().Get<GraphicsDevice>(deviceHandle);
+  ASSERT(baseDevice != nullptr);
+  if (baseDevice == nullptr)
+  {
+      LOG_ERR("D3D11 error! Unexpected GraphicsStorage error! Can't retrieve data from valid handle!");
+      return nullptr;
+  }
+
+  auto* device = static_cast<D3D11GraphicsDevice*>(baseDevice);
+
+  auto* nativeDevice = device->GetNativeDevice();
+
+  ASSERT(nativeDevice != nullptr);
+  if (nativeDevice == nullptr)
+  {
+      LOG_ERR("D3D11 error! Unexpected device error! Can't retrieve native device!");
+      return nullptr;
+  }
+
+  return nativeDevice;
+}
+
 D3D11GraphicsDevice::D3D11GraphicsDevice(const GraphicsDeviceParams& params)
 {
   ASSERT(params.windowHandle != nullptr);
@@ -213,6 +245,13 @@ void D3D11GraphicsDevice::DumpDebugMessages()
 
 void D3D11GraphicsDevice::ClearBackBuffer(float r, float g, float b)
 {
+  ASSERT(m_SwapChain != nullptr);
+  if (!m_SwapChain)
+  {
+    LOG_ERR("D3D11 error: SwapChain didn't get properly created.");
+    return;
+  }
+
   auto* nativeRenderTargetView = m_SwapChain->GetNativeRenderTargetView();
   ASSERT(nativeRenderTargetView != nullptr); 
   if (nativeRenderTargetView == nullptr)
@@ -230,4 +269,108 @@ void D3D11GraphicsDevice::ClearBackBuffer(float r, float g, float b)
 
   float clearColor[] = { r, g, b, 1.0f };
   m_Context->ClearRenderTargetView(nativeRenderTargetView, clearColor);
+}
+
+void D3D11GraphicsDevice::SetGraphicsState(const GraphicsState& state) 
+{
+  // @Review: in the future this will probably be a command.
+  m_State = state;
+}
+
+void D3D11GraphicsDevice::ImmediateDraw()
+{
+  if (m_State.sizeOfVertices == 0)
+  {
+    LOG_ERR("D3D11 error: ImmediateDraw: Need valid vertex size.");
+    return;
+  }
+
+  ASSERT(m_Context != nullptr);
+  if (!m_Context)
+  {
+    LOG_ERR("D3D11 error: Context didn't get properly created.");
+    return;
+  }
+
+  ASSERT(m_SwapChain != nullptr);
+  if (!m_SwapChain)
+  {
+    LOG_ERR("D3D11 error: Swap Chain didn't get properly created.");
+    return;
+  }
+
+  // This should be done just when create/resize the swap chain.
+  D3D11_VIEWPORT viewport{};
+  viewport.TopLeftX = 0.0f;
+  viewport.TopLeftY = 0.0f;
+  viewport.Width    = static_cast<float>(1270);
+  viewport.Height   = static_cast<float>(720);
+  viewport.MinDepth = 0.0f;
+  viewport.MaxDepth = 1.0f;
+  m_Context->RSSetViewports(1, &viewport);
+
+  // Set the render target.
+  m_Context->OMSetRenderTargets(1u, &m_SwapChain->GetNativeRenderTargetView(), nullptr);
+
+  // Bind the Vertex Shader.
+  bool validVS = Application::GetInstance().GetGraphicsStorage().IsValid(m_State.vertexShader);
+  if (!validVS)
+  {
+    LOG_ERR("D3D11 error: ImmediateDraw: No VS shader bound to the state.");
+    return;
+  }
+
+  auto* vsBase = Application::GetInstance().GetGraphicsStorage().Get<Shader>(m_State.vertexShader);
+  auto* vsDerived = vsBase ? static_cast<D3D11Shader*>(vsBase) : nullptr;
+  if (vsShader != nullptr)
+  {
+    const D3D11ShaderData& vsDerivedData = vsDerived->GetNativeShaderData();
+    if (vsDerivedData.stage == ShaderStage::Vertex)
+    {
+      m_Context->VSSetShader(vsDerivedData.vs, nullptr);
+    }
+  }
+
+  // Bind the Pixel Shader.
+  bool validPS = Application::GetInstance().GetGraphicsStorage().IsValid(m_State.pixelShader);
+  if (!validPS)
+  {
+    LOG_ERR("D3D11 error: ImmediateDraw: No PS shader bound to the state.");
+    return;
+  }
+
+  auto* psBase = Application::GetInstance().GetGraphicsStorage().Get<Shader>(m_State.pixelShader);
+  auto* psDerived = psBase ? static_cast<D3D11Shader*>(psBase) : nullptr;
+  if (psShader != nullptr)
+  {
+    const D3D11ShaderData& psDerivedData = psDerived->GetNativeShaderData();
+    if (psDerivedData.stage == ShaderStage::Pixel)
+    {
+      m_Context->PSSetShader(psDerivedData.ps, nullptr);
+    }
+  }
+
+  // Bind the Vertex Buffer.
+  bool validVB = Application::GetInstance().GetGraphicsStorage().IsValid(m_State.vertexBuffer);
+  if (!validVB)
+  {
+    LOG_ERR("D3D11 error: ImmediateDraw: No vertex buffer bound to the state.");
+    return;
+  }
+
+  auto* vbBase = Application::GetInstance().GetGraphicsStorage().Get<VertexBuffer>(m_State.vertexBuffer);
+  auto* vbDerived = vbBase ? static_cast<D3D11VertexBuffer*>(vbBase) : nullptr;
+  if (vbShader != nullptr)
+  {
+    ID3D11VertexBuffer* vertexBuffer = psDerived->GetNativeVertexBuffer();
+    if (vertexBuffer != nullptr)
+    {
+      // @Pending: stride
+      // @Pending: offset
+      context->IASetVertexBuffers(/* start slot */ 0u, /* num of buffers */ 1u, &vertexBuffer, &stride, &offset);
+    }
+  }
+
+  m_Context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST); 
+  m_Context->Draw(m_State.sizeOfVertices, 0u);
 }

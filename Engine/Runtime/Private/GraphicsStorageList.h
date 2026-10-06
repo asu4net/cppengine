@@ -3,12 +3,14 @@ GRAPHICS_STORAGE_REGISTER(GraphicsInstance, OpenGLGraphicsInstance, GraphicsInst
 GRAPHICS_STORAGE_REGISTER(GraphicsDevice,   OpenGLGraphicsDevice,   GraphicsDeviceParams)
 GRAPHICS_STORAGE_REGISTER(SwapChain,        OpenGLSwapChain,        SwapChainParams)
 GRAPHICS_STORAGE_REGISTER(VertexBuffer,     OpenGLVertexBuffer,     VertexBufferParams)
+GRAPHICS_STORAGE_REGISTER(VertexBuffer,     OpenGLBufferLayout,     BufferLayoutParams)
 GRAPHICS_STORAGE_REGISTER(Shader,           OpenGLShader,           ShaderParams)
 #elif  ENGINE_D3D11
 GRAPHICS_STORAGE_REGISTER(GraphicsInstance, D3D11GraphicsInstance,  GraphicsInstanceParams)
 GRAPHICS_STORAGE_REGISTER(GraphicsDevice,   D3D11GraphicsDevice,    GraphicsDeviceParams)
 GRAPHICS_STORAGE_REGISTER(SwapChain,        D3D11SwapChain,         SwapChainParams)
 GRAPHICS_STORAGE_REGISTER(VertexBuffer,     D3D11VertexBuffer,      VertexBufferParams)
+GRAPHICS_STORAGE_REGISTER(BufferLayout,     D3D11BufferLayout,      BufferLayoutParams)
 GRAPHICS_STORAGE_REGISTER(Shader,           D3D11Shader,            ShaderParams)
 #else
 #error "Missing Graphics API implementation."

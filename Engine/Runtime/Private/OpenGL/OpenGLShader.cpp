@@ -9,8 +9,3 @@ OpenGLShader::~OpenGLShader()
 {
   LOG_INFO("OpenGL Shader destroyed.");
 }
-
-void OpenGLShader::Use()
-{
-  LOG_INFO("OpenGL Shader used.");
-}

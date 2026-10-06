@@ -9,13 +9,3 @@ OpenGLVertexBuffer::~OpenGLVertexBuffer()
 {
   LOG_INFO("OpenGL VertexBuffer destroyed.");
 }
-
-void OpenGLVertexBuffer::Use()
-{
-  LOG_INFO("OpenGL VertexBuffer used.");
-}
-
-void OpenGLVertexBuffer::SetData(const void* data, std::uint32_t size)
-{
-  LOG_INFO("OpenGL VertexBuffer updated data.");
-}

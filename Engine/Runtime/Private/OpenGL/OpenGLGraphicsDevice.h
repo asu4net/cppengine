@@ -35,6 +35,10 @@ class OpenGLGraphicsDevice : public GraphicsDevice
 
     void ClearBackBuffer(float r = 0, float g = 0, float b = 0) override;
 
+    // @Pending: Implement this stuff for OpenGL.
+    void SetGraphicsState(const GraphicsState& state) override {}
+    void ImmediateDraw() override {}
+
   private:
 #if ENGINE_SDL
     SDL_GLContext m_SDL_GLContext;

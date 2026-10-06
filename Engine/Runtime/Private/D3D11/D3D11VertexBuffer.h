@@ -8,7 +8,13 @@ class D3D11VertexBuffer : public VertexBuffer
     D3D11VertexBuffer(const VertexBufferParams& params);
     ~D3D11VertexBuffer();
 
-    void Use() override;
-    void SetData(const void* data, std::uint32_t size) override;
+    D3D11VertexBuffer(const D3D11VertexBuffer&) = delete;
+    D3D11VertexBuffer& operator=(const D3D11VertexBuffer&) noexcept = delete;
+    D3D11VertexBuffer(D3D11VertexBuffer&&) = delete;
+    D3D11VertexBuffer& operator=(D3D11VertexBuffer&&) noexcept = delete;
+
+    ID3D11Buffer* GetNativeVertexBuffer() const { return m_VertexBuffer; }
+
   private:
+    ID3D11Buffer* m_VertexBuffer = nullptr;
 };

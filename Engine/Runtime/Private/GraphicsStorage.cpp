@@ -20,14 +20,17 @@
 #include "OpenGL/OpenGLGraphicsDevice.h"
 #include "OpenGL/OpenGLSwapChain.h"
 #include "OpenGL/OpenGLVertexBuffer.h"
+#include "OpenGL/OpenGLBufferLayout.h"
 #include "OpenGL/OpenGLShader.h"
 #elif  ENGINE_D3D11
 #include "Shaders/HLSL/HLSLTestTriangle.h"
 #include "Shaders/HLSL/HLSLFlatColor.h"
+#include "D3D11/D3D11ShaderDataType.h"
 #include "D3D11/D3D11GraphicsInstance.h"
 #include "D3D11/D3D11GraphicsDevice.h"
 #include "D3D11/D3D11SwapChain.h"
 #include "D3D11/D3D11VertexBuffer.h"
+#include "D3D11/D3D11BufferLayout.h"
 #include "D3D11/D3D11Shader.h"
 #else
 #error "Missing Graphics API implementation."
@@ -115,6 +118,7 @@ bool GraphicsStorage::IsValid<_BASE>(GraphicsHandle handle)           \
 #include "D3D11/D3D11GraphicsDevice.cpp"
 #include "D3D11/D3D11SwapChain.cpp"
 #include "D3D11/D3D11VertexBuffer.cpp"
+#include "D3D11/D3D11BufferLayout.cpp"
 #include "D3D11/D3D11Shader.cpp"
 #else
 #error "Missing Graphics API implementation."

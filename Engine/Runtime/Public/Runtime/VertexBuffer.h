@@ -4,13 +4,14 @@
 
 struct VertexBufferParams
 {
+  const void* vertices = nullptr;
+  std::size_t vertSize = 0;
+  std::size_t vertCount = 0;
+  GraphicsHandle deviceHandle;
 };
 
 class VertexBuffer
 {
   public:
     virtual ~VertexBuffer() = default;
-
-    virtual void Use() = 0;
-    virtual void SetData(const void* data, std::uint32_t size) = 0;
 };
