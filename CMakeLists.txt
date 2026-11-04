@@ -58,6 +58,9 @@ endif()
 
 if(ENGINE_GRAPHICS_API STREQUAL "OPENGL")
   add_subdirectory(Engine/ThirdParty/glad)
+  set_target_properties(glad PROPERTIES
+    POSITION_INDEPENDENT_CODE ON
+  )
 endif()
 
 add_subdirectory(Engine/ThirdParty/glm)
